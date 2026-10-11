@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solid State Physics: Crystals, Defects and Bands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Noto+Sans+Bengali:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F7; --paper:#FFFFFF; --ink:#16263A; --muted:#566679; --line:#CBD6DD; --grid:rgba(22,38,58,.055);
+  --accent:#0E7C86; --margin:#C8473A; --a1:#2F6FD0; --a2:#D98A12; --a3:#2E9A63; --plane:rgba(14,124,134,.30);
+  --tint:#E6F1F2; --warnbg:#FBECE9;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --bnfont:"Noto Sans Bengali","Hind Siliguri","Kalpurush","Nirmala UI",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A24; --paper:#16232F; --ink:#E6EEF4; --muted:#9AAABB; --line:#2B3C4B; --grid:rgba(230,238,244,.05);
+    --accent:#4FC3CF; --margin:#E27B6E; --a1:#6E9FF0; --a2:#F0AD42; --a3:#5CC48C; --plane:rgba(79,195,207,.32);
+    --tint:#1B3039; --warnbg:#35221F;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A24; --paper:#16232F; --ink:#E6EEF4; --muted:#9AAABB; --line:#2B3C4B; --grid:rgba(230,238,244,.05);
+  --accent:#4FC3CF; --margin:#E27B6E; --a1:#6E9FF0; --a2:#F0AD42; --a3:#5CC48C; --plane:rgba(79,195,207,.32);
+  --tint:#1B3039; --warnbg:#35221F;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;background-color:var(--bg);color:var(--ink);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  font-family:var(--body);font-size:17px;line-height:1.65;
+}
+html.bn body{font-family:var(--bnfont);line-height:1.85;font-size:16.5px}
+html.bn h1,html.bn h2,html.bn h3,html.bn th{font-family:var(--bnfont)}
+.wrap{max-width:760px;margin:0 auto;padding:12px 18px 64px}
+h1,h2,h3{font-family:var(--head);line-height:1.2;margin:0}
+h1{font-size:clamp(1.9rem,6.4vw,2.7rem);font-weight:700;letter-spacing:-.01em;margin-top:18px}
+.sub{color:var(--muted);margin:10px 0 0;font-size:1rem}
+h2{font-size:1.45rem;font-weight:700;margin-bottom:10px}
+h3{font-size:1.05rem;font-weight:600;margin:22px 0 6px}
+p{margin:0 0 12px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* language bar */
+.langbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0 0;font-family:var(--sans);font-size:.85rem}
+.langbar button{font:inherit;font-weight:600;border:1px solid var(--line);background:transparent;color:var(--ink);padding:5px 14px;border-radius:6px;cursor:pointer}
+.langbar button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+html.bn .langbar button{font-family:var(--bnfont)}
+.langbar .hint{color:var(--muted);flex:1;min-width:150px}
+
+.legend{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.tag{font-family:var(--sans);font-size:.74rem;border-radius:3px;padding:1px 6px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+.tag.added{background:var(--a2);color:#1a1200}
+.tag.note{background:var(--accent);color:#fff}
+
+/* roadmap */
+.roadmap{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 18px 10px;margin:22px 0 8px}
+.roadmap h2{font-size:1.15rem}
+.roadmap ol{margin:0;padding-left:1.4em}
+.roadmap li{margin:0 0 8px}
+.roadmap li span{display:block;color:var(--muted);font-size:.9rem;line-height:1.45}
+
+/* sections: the margin rule echoes the red margin of the original notebook */
+section{border-left:2px solid var(--margin);padding:6px 0 6px 16px;margin:36px 0 0}
+.num{font-family:var(--head);color:var(--margin);margin-right:.45em}
+
+.formula{background:var(--tint);border-radius:6px;padding:10px 14px;margin:12px 0;font-style:italic;overflow-x:auto}
+.formula b{font-style:normal}
+html.bn .formula{font-style:normal}
+.key{border-left:4px solid var(--accent);background:var(--tint);padding:10px 14px;margin:14px 0;border-radius:0 6px 6px 0}
+.warn{border-left:4px solid var(--margin);background:var(--warnbg);padding:10px 14px;margin:14px 0;border-radius:0 6px 6px 0;font-size:.97rem}
+.src{font-family:var(--sans);font-size:.8rem;color:var(--muted);margin:14px 0 0;padding-top:8px;border-top:1px dashed var(--line);line-height:1.6}
+.src a{white-space:nowrap}
+
+dl.terms{margin:10px 0 4px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 14px 8px}
+dl.terms dt{font-family:var(--head);font-weight:700;color:var(--accent);margin-top:10px}
+dl.terms dd{margin:2px 0 0 0;font-size:.97rem}
+.termhead{font-family:var(--head);font-weight:600;font-size:.95rem;margin:20px 0 -2px}
+html.bn .termhead{font-family:var(--bnfont)}
+
+.scroll{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--paper)}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{font-family:var(--head);font-weight:600;background:var(--tint)}
+
+figure.panel{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px 10px 8px;margin:0}
+figure.panel.wide{margin:14px 0}
+figcaption{font-family:var(--sans);font-size:.82rem;color:var(--muted);text-align:center;margin-top:4px;line-height:1.4}
+html.bn figcaption{font-family:var(--bnfont)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:14px 0}
+
+svg{width:100%;height:auto;display:block}
+svg text{font-family:var(--sans);font-size:11px;fill:var(--ink)}
+svg text.m{fill:var(--muted)}
+svg text.b{font-weight:700}
+.edge{stroke:var(--ink);stroke-width:1.5;fill:none}
+.hid{stroke-dasharray:4 3;opacity:.5}
+.plane{fill:var(--plane);stroke:var(--accent);stroke-width:1.6}
+.ldiag{stroke:var(--margin);stroke-width:2.4}
+.c1{fill:var(--a1);stroke:var(--ink);stroke-width:.8}
+.c2{fill:var(--a2);stroke:var(--ink);stroke-width:.8}
+.c3{fill:var(--a3);stroke:var(--ink);stroke-width:.8}
+.dot{fill:var(--ink)}
+.vac{fill:none;stroke:var(--margin);stroke-width:1.4;stroke-dasharray:3 3}
+.ln{stroke:var(--ink);stroke-width:1.4;fill:none}
+.lnm{stroke:var(--muted);stroke-width:1;fill:none}
+.arrowfill{fill:var(--ink)}
+.dash{stroke:var(--margin);stroke-width:1.5;stroke-dasharray:4 3;fill:none}
+.gr1{fill:var(--a1);fill-opacity:.12}.gr2{fill:var(--a3);fill-opacity:.14}.gr3{fill:var(--a2);fill-opacity:.16}.gr4{fill:var(--margin);fill-opacity:.12}
+.gb{stroke:var(--ink);stroke-width:1.4;fill:none}
+.band{fill:var(--accent);fill-opacity:.22;stroke:var(--accent);stroke-width:1.4}
+.vb{fill:var(--a1);fill-opacity:.5;stroke:var(--a1);stroke-width:1.3}
+.cb{fill:var(--a3);fill-opacity:.22;stroke:var(--a3);stroke-width:1.3}
+
+ol.steps{padding-left:1.3em;margin:8px 0 12px}
+ol.steps li{margin-bottom:8px}
+ul{padding-left:1.3em}
+li{margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chips a{font-family:var(--sans);font-size:.82rem;text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink)}
+.chips a b{color:var(--margin);font-weight:600;margin-left:4px}
+details{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+ol.refs{padding-left:1.6em;font-size:.93rem}
+ol.refs li{margin-bottom:10px}
+sup,sub{line-height:0}
+footer{margin-top:44px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<div class="langbar" role="group" aria-label="Language">
+  <button id="b-en" type="button" aria-pressed="true">English</button>
+  <button id="b-bn" type="button" aria-pressed="false">বাংলা</button>
+  <span class="hint" data-bn="Technical keyword-গুলো সবসময় English-এ থাকে, শুধু ব্যাখ্যা বাংলা হয়।">Technical keywords always stay in English; only the explanations are translated.</span>
+</div>
+
+<header>
+  <h1 data-bn="Solid State Physics: crystals, defects এবং bands">Solid State Physics: crystals, defects and bands</h1>
+  <p class="sub" data-bn="হাতে লেখা class note (Yeasir Sir) থেকে তৈরি একটি বিস্তারিত, ছবিসহ study note। প্রতিটি keyword ব্যাখ্যা করা হয়েছে এবং প্রতিটি বিষয়-section-এর শেষে সূত্র (reference) দেওয়া আছে।">A detailed, illustrated study note rebuilt from the handwritten class notes (Yeasir Sir). Every keyword is explained, and every topic section ends with its sources.</p>
+  <p class="legend"><span class="tag note" data-bn="নোট থেকে">from your note</span> <span data-bn="আপনার handwritten note-এ যা আছে।" >What is in your handwritten note.</span><br>
+  <span class="tag added" data-bn="যোগ করা">added</span> <span data-bn="Note-এ ছিল না, textbook থেকে যোগ করা হয়েছে। [1], [2] ... মানে নিচের Reference তালিকার নম্বর।">Not in the note; added from textbooks to fill gaps. Numbers like [1], [2] refer to the reference list at the end.</span></p>
+</header>
+
+<nav class="roadmap" aria-label="Learning roadmap">
+  <h2 data-bn="Learning roadmap: এই ক্রমে পড়ো">Learning roadmap: study in this order</h2>
+  <ol>
+    <li><a href="#s1" data-bn="Crystalline vs amorphous solids">Crystalline vs amorphous solids</a><span data-bn="Order কেন গুরুত্বপূর্ণ: long-range বনাম short-range।">Why order matters: long-range vs short-range.</span></li>
+    <li><a href="#s2" data-bn="Lattice, basis ও unit cell">Lattice, basis and unit cell</a><span data-bn="পরের সব আলোচনার ভিত্তি-শব্দগুলো।">The vocabulary everything else depends on.</span></li>
+    <li><a href="#s3" data-bn="Crystal systems">Crystal systems</a><span data-bn="Cubic ও hexagonal (সাথে সবগুলো ৭টি system)।">Cubic and hexagonal (plus all 7 systems).</span></li>
+    <li><a href="#s4" data-bn="Cubic system: SC, BCC, FCC">Cubic system: SC, BCC, FCC</a><span data-bn="Atom কোথায় বসে, coordination number, diagonal।">Where atoms sit, coordination number, diagonals.</span></li>
+    <li><a href="#s5" data-bn="Unit cell-এ atom গণনা">Counting atoms per unit cell</a><span data-bn="Corner = 1/8, face = 1/2, body = 1।">Corner = 1/8, face = 1/2, body = 1.</span></li>
+    <li><a href="#s6" data-bn="Packing fraction">Packing fraction</a><span data-bn="জ্যামিতি, ধাপে ধাপে হিসাব, কেন FCC &gt; BCC &gt; SC।">Geometry, step-by-step derivations, why FCC &gt; BCC &gt; SC.</span></li>
+    <li><a href="#s7" data-bn="Miller indices">Miller indices</a><span data-bn="তিনটি সংখ্যা দিয়ে plane-এর নাম।">Naming planes with three numbers.</span></li>
+    <li><a href="#s8" data-bn="Single crystal বনাম polycrystal">Single crystal vs polycrystal</a><span data-bn="Grain ও grain boundary।">Grains and grain boundaries.</span></li>
+    <li><a href="#s9" data-bn="Crystal defects">Crystal defects</a><span data-bn="Point, line, plane; Frenkel ও Schottky।">Point, line, plane; Frenkel and Schottky.</span></li>
+    <li><a href="#s10" data-bn="Band theory of solids">Band theory of solids</a><span data-bn="Atomic level থেকে energy band (Si উদাহরণ)।">From atomic levels to energy bands (Si example).</span></li>
+    <li><a href="#s11" data-bn="Worked problem: KCl-এর lattice constant">Worked problem: KCl lattice constant</a><span data-bn="Density, unit cell-এর mass, lattice constant।">Density, mass of unit cell, lattice constant.</span></li>
+    <li><a href="#s12" data-bn="পরীক্ষার আগে যাচাই">Check before the exam</a><span data-bn="Note-এর ছোট ভুল, ফাঁক ও self-test।">Small slips and gaps in the note, plus a self-test.</span></li>
+    <li><a href="#s13" data-bn="Formula sheet">Formula sheet</a><span data-bn="দ্রুত revision-এর জন্য সব সূত্র এক জায়গায়।">All formulas in one place for quick revision.</span></li>
+    <li><a href="#s14" data-bn="Keyword index ও References">Keyword index and references</a><span data-bn="যেকোনো keyword কোন section-এ ব্যাখ্যা করা হয়েছে, আর সব সূত্র।">Where each keyword is explained, and all sources.</span></li>
+  </ol>
+</nav>
+
+<!-- ================= 1 ================= -->
+<section id="s1">
+  <h2><span class="num">1</span><span data-bn="Crystalline vs amorphous solids">Crystalline vs amorphous solids</span></h2>
+  <p data-bn="প্রতিটি solid atom দিয়ে তৈরি, কিন্তু সব solid-এ atom-গুলো একইভাবে সাজানো থাকে না। এই সাজানো কতটা নিয়মিত, সেটাই solid-কে ভাগ করার প্রথম ও সবচেয়ে মৌলিক উপায়।">Every solid is made of atoms, but the atoms are not arranged the same way in every solid. How regular the arrangement is gives the first and most basic classification of solids.</p>
+  <div class="scroll"><table>
+    <tr><th data-bn="ধরন">Type</th><th data-bn="Order">Order</th><th data-bn="মানে কী">What it means</th><th data-bn="উদাহরণ">Examples</th></tr>
+    <tr><td>Crystalline</td><td>Long-range order</td>
+      <td data-bn="Atom-গুলো অনেক দূর পর্যন্ত, লক্ষ লক্ষ atom জুড়ে, একটি নিয়মিত pattern-এ পুনরাবৃত্ত হয়। এক জায়গার pattern জানলে অনেক দূরের pattern-ও অনুমান করা যায়।">Atoms repeat in a regular pattern over a very large distance, across millions of atoms. If you know the pattern in one place, you can predict it far away.</td>
+      <td>NaCl, Si, diamond, metals</td></tr>
+    <tr><td>Amorphous</td><td>Short-range order</td>
+      <td data-bn="শুধু একটি atom-এর কাছের কয়েকটি neighbour নিয়মিতভাবে সাজানো থাকে। দূরে গেলে সেই নিয়ম মিলিয়ে যায়।">Only the first few neighbours of an atom are arranged regularly. Farther away, the regularity fades out.</td>
+      <td>glass, plastics</td></tr>
+  </table></div>
+  <div class="grid2">
+    <figure class="panel"><div id="fig-ordered"></div><figcaption data-bn="Crystalline: প্রতিটি atom একটি পুনরাবৃত্ত grid-এ বসে">Crystalline: every atom sits on a repeating grid</figcaption></figure>
+    <figure class="panel"><div id="fig-amorph"></div><figcaption data-bn="Amorphous: neighbour কাছাকাছি, কিন্তু grid নেই">Amorphous: neighbours are close, but there is no grid</figcaption></figure>
+  </div>
+  <p data-bn="Note-এ এটি এভাবে আঁকা: long-range order হলো সারিবদ্ধ বিন্দু যা চলতেই থাকে (o o o o o ...), আর short-range order হলো মাত্র অল্প কয়েকটি বিন্দু (o o o)।">Your note draws it as a row of dots that keeps going (o o o o o …) for long-range order, and only a few dots (o o o) for short-range order.</p>
+  <h3><span data-bn="একটি বাড়তি তথ্য">Why it matters</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="পুনরাবৃত্ত pattern থাকার কারণে crystalline solid একটি নির্দিষ্ট temperature-এ গলে যায়। Amorphous solid (যেমন glass) গলে না, বরং একটি temperature-সীমার মধ্যে ধীরে ধীরে নরম হয়।">Because of the repeating pattern, a crystalline solid melts at one sharp temperature. An amorphous solid, such as glass, instead softens gradually over a range of temperatures.</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Solid</dt><dd data-bn="পদার্থের যে অবস্থায় atom-গুলো কাছাকাছি থাকে এবং একটি গড় অবস্থানের চারপাশে আটকে থাকে, তাই নিজের আকার ধরে রাখে।">A state of matter in which atoms stay close together around fixed average positions, so the material keeps its own shape.</dd>
+    <dt>Crystal / crystalline solid</dt><dd data-bn="যে solid-এর atom-গুলো তিন দিকেই পুনরাবৃত্ত হওয়া একটি নিয়মিত pattern তৈরি করে।">A solid whose atoms form a regular pattern that repeats in all three directions.</dd>
+    <dt>Amorphous solid</dt><dd data-bn="যে solid-এ দূরপাল্লায় কোনো পুনরাবৃত্ত pattern নেই। (শব্দটির অর্থ ‘আকারহীন’।)">A solid with no repeating pattern over long distances. (The word means ‘without form’.)</dd>
+    <dt>Order</dt><dd data-bn="Atom-গুলো কতটা নিয়মিতভাবে সাজানো, তার পরিমাপ।">How regularly atoms are arranged.</dd>
+    <dt>Long-range order</dt><dd data-bn="Pattern পুরো solid জুড়ে, অনেক atom-দূরত্ব পর্যন্ত, বজায় থাকে। Crystal-এর বৈশিষ্ট্য।">The pattern is kept across the whole solid, over many atom-spacings. The signature of a crystal.</dd>
+    <dt>Short-range order</dt><dd data-bn="Pattern শুধু কাছের neighbour পর্যন্ত থাকে। Amorphous solid-এর বৈশিষ্ট্য।">The pattern holds only among nearby neighbours. The signature of an amorphous solid.</dd>
+    <dt>Periodic</dt><dd data-bn="সমান ধাপে বা সমান দূরত্বে বারবার ফিরে আসা।">Repeating again and again at equal steps.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 1">Class note p.1</a>; <a href="#ref-1">[1]</a> Ch. 1, Ch. 19; <a href="#ref-3">[3]</a></p>
+</section>
+
+<!-- ================= 2 ================= -->
+<section id="s2">
+  <h2><span class="num">2</span><span data-bn="Lattice, basis ও unit cell">Lattice, basis and unit cell</span></h2>
+  <p data-bn="একটি crystal-কে দুটি ধারণা দিয়ে বর্ণনা করা হয়: lattice এবং basis।">A crystal is described with two ideas: a lattice and a basis.</p>
+  <div class="formula"><b>Crystal structure</b> = lattice + basis</div>
+  <p data-bn="Wallpaper-এর কথা ভাবো। Lattice হলো সেই গ্রিড, যেখানে ছবিগুলো বসে। Basis হলো প্রতিটি জায়গায় ছাপানো ছবিটি। একই lattice-এ আলাদা basis বসালে আলাদা crystal পাওয়া যায়।">Think of wallpaper. The lattice is the grid of positions; the basis is the picture printed at every position. The same lattice with a different basis gives a different crystal.</p>
+  <figure class="panel wide"><div id="fig-basis"></div><figcaption data-bn="প্রতিটি lattice point-এ একই basis বসালেই crystal তৈরি হয়">Place the same basis on every lattice point and you get the crystal</figcaption></figure>
+
+  <h3 data-bn="Unit cell এবং তার ধরন">Unit cell and its types</h3>
+  <p data-bn="Unit cell হলো crystal-এর ছোট একটি building block। একে সব দিকে বারবার বসালে পুরো crystal পাওয়া যায়। Lattice point কোথায় আছে, তার ওপর ভিত্তি করে unit cell-কে ভাগ করা হয়:">The unit cell is the small building block of the crystal; stacking copies of it in all directions builds the whole crystal. Unit cells are grouped by where their lattice points are:</p>
+  <div class="scroll"><table>
+    <tr><th data-bn="Cell-এর ধরন">Cell type</th><th data-bn="কোণা ছাড়া বাড়তি lattice point">Extra lattice points</th><th data-bn="প্রতি cell-এ lattice point">Lattice points per cell</th></tr>
+    <tr><td>Primitive</td><td data-bn="নেই (শুধু corner)">none (corners only)</td><td>8 × 1/8 = 1</td></tr>
+    <tr><td>Body-centered</td><td data-bn="Cell-এর ঠিক মাঝখানে একটি">one at the centre of the cell</td><td>1 + 1 = 2</td></tr>
+    <tr><td>Face-centered</td><td data-bn="৬টি face-এর প্রতিটির কেন্দ্রে একটি">one at the centre of each of the 6 faces</td><td>1 + 6 × 1/2 = 4</td></tr>
+    <tr><td>Base-centered</td><td data-bn="দুটি বিপরীত face-এর কেন্দ্রে একটি করে">one at the centre of two opposite faces</td><td>1 + 2 × 1/2 = 2</td></tr>
+  </table></div>
+  <h3><span data-bn="Bravais lattice">Bravais lattice</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="৭টি crystal system-এর সাথে primitive, body-, face- ও base-centered ধরনগুলো মিলিয়ে মোট ঠিক ১৪টি আলাদা lattice পাওয়া যায়। এদের বলে Bravais lattice। (Section 3-এর table-এ প্রতিটি system-এর ভাগ দেখো।)">Combining the 7 crystal systems with the primitive, body-, face- and base-centered types gives exactly 14 distinct lattices, called Bravais lattices. (See the table in Section 3 for how they split among the systems.)</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Lattice</dt><dd data-bn="মহাশূন্যে বিন্দুর একটি অসীম, নিয়মিত সাজানো সারি। এটি একটি জ্যামিতিক ধারণা, এখানে atom নেই।">An endless, regularly spaced array of points in space. It is a geometric idea; there are no atoms in it.</dd>
+    <dt>Lattice point</dt><dd data-bn="Lattice-এর একটি বিন্দু। এখানেই basis বসানো হয়।">One point of the lattice. This is where a copy of the basis is placed.</dd>
+    <dt>Basis</dt><dd data-bn="প্রতিটি lattice point-এর সাথে যুক্ত একটি atom বা atom-এর গুচ্ছ। উদাহরণ: NaCl-এ basis হলো একটি Na ও একটি Cl।">The atom, or group of atoms, attached to every lattice point. Example: in NaCl the basis is one Na and one Cl.</dd>
+    <dt>Crystal structure</dt><dd data-bn="Lattice এবং basis একসাথে যে বাস্তব atom-সাজানো তৈরি করে।">The real arrangement of atoms that results from lattice and basis together.</dd>
+    <dt>Unit cell</dt><dd data-bn="Crystal-এর সবচেয়ে ছোট পুনরাবৃত্ত অংশ, যা তিন দিকে সরিয়ে সরিয়ে বসালে পুরো crystal তৈরি হয়। ছবিতে যে ঘনক (cube) আঁকা, সেটি সাধারণত conventional unit cell।">The repeating piece of the crystal which, shifted along three directions, rebuilds the whole crystal. The cube drawn in pictures is usually the conventional unit cell.</dd>
+    <dt>Primitive cell</dt><dd data-bn="যে unit cell-এ ঠিক একটি lattice point থাকে, অর্থাৎ সবচেয়ে ছোট সম্ভাব্য cell।">A unit cell holding exactly one lattice point, the smallest possible cell.</dd>
+    <dt>Centered cell</dt><dd data-bn="যে unit cell-এ corner ছাড়াও বাড়তি lattice point আছে: body centre, face centre বা base। এদের cell সাধারণত primitive-এর চেয়ে বড়, কিন্তু আকার সহজ।">A unit cell with extra lattice points besides the corners: at the body centre, the face centres, or the base. Such cells are larger than primitive ones but have a simpler shape.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 1">Class note p.1</a>; <a href="#ref-1">[1]</a> Ch. 1 (Basis and the Crystal Structure; Fundamental Types of Lattices); <a href="#ref-2">[2]</a> Ch. 4; <a href="#ref-10">[10]</a></p>
+</section>
+
+<!-- ================= 3 ================= -->
+<section id="s3">
+  <h2><span class="num">3</span><span data-bn="Crystal systems">Crystal systems</span></h2>
+  <p data-bn="Unit cell-এর আকার ছয়টি সংখ্যা দিয়ে নির্ধারিত হয়, এদের বলে lattice parameters: তিনটি edge-এর দৈর্ঘ্য a, b, c এবং তাদের মধ্যকার তিনটি কোণ α, β, γ।">The shape of a unit cell is fixed by six numbers called lattice parameters: the three edge lengths a, b, c and the three angles α, β, γ between them.</p>
+  <ul>
+    <li data-bn="a, b, c = যথাক্রমে x, y, z দিক বরাবর edge-এর দৈর্ঘ্য।">a, b, c = lengths of the edges along the x, y, z directions.</li>
+    <li data-bn="α = b ও c edge-এর মধ্যকার কোণ; β = a ও c-এর মধ্যকার কোণ; γ = a ও b-এর মধ্যকার কোণ।">α = angle between b and c; β = angle between a and c; γ = angle between a and b.</li>
+  </ul>
+  <p data-bn="আপনার note-এ দুটি system বিস্তারিত আছে:">Your note covers two systems in detail:</p>
+  <div class="scroll"><table>
+    <tr><th>System</th><th data-bn="Edge-এর দৈর্ঘ্য">Edge lengths</th><th data-bn="কোণ">Angles</th></tr>
+    <tr><td>Cubic</td><td>a = b = c</td><td>α = β = γ = 90°</td></tr>
+    <tr><td>Hexagonal</td><td>a = b ≠ c</td><td>α = β = 90°, γ = 120°</td></tr>
+  </table></div>
+  <figure class="panel wide" style="max-width:330px;margin-left:auto;margin-right:auto"><div id="fig-hex"></div><figcaption data-bn="Hexagonal cell-এর base: সমান দুটি edge, মাঝের কোণ 120°">Base of the hexagonal cell: two equal edges at 120°</figcaption></figure>
+  <h3><span data-bn="সবগুলো ৭টি system">All seven systems</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="Note-এ লেখা আছে ‘৭ প্রকার’, কিন্তু দুটি তালিকাভুক্ত। পূর্ণাঙ্গ তালিকা:">The note says there are 7 types but lists two. The full list:</p>
+  <div class="scroll"><table>
+    <tr><th>System</th><th data-bn="Edge">Edges</th><th data-bn="কোণ">Angles</th><th data-bn="Bravais lattice-এর সংখ্যা">Bravais lattices</th></tr>
+    <tr><td>Cubic</td><td>a = b = c</td><td>α = β = γ = 90°</td><td>3 (P, I, F)</td></tr>
+    <tr><td>Tetragonal</td><td>a = b ≠ c</td><td>α = β = γ = 90°</td><td>2 (P, I)</td></tr>
+    <tr><td>Orthorhombic</td><td>a ≠ b ≠ c</td><td>α = β = γ = 90°</td><td>4 (P, C, I, F)</td></tr>
+    <tr><td>Hexagonal</td><td>a = b ≠ c</td><td>α = β = 90°, γ = 120°</td><td>1 (P)</td></tr>
+    <tr><td>Trigonal (rhombohedral)</td><td>a = b = c</td><td>α = β = γ ≠ 90°</td><td>1 (P)</td></tr>
+    <tr><td>Monoclinic</td><td>a ≠ b ≠ c</td><td>α = γ = 90° ≠ β</td><td>2 (P, C)</td></tr>
+    <tr><td>Triclinic</td><td>a ≠ b ≠ c</td><td>α ≠ β ≠ γ</td><td>1 (P)</td></tr>
+  </table></div>
+  <p data-bn="মোট 3 + 2 + 4 + 1 + 1 + 2 + 1 = 14। এখানে P = primitive, I = body-centered, F = face-centered, C = base-centered।">Total: 3 + 2 + 4 + 1 + 1 + 2 + 1 = 14. Here P = primitive, I = body-centered, F = face-centered, C = base-centered.</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Lattice parameters</dt><dd data-bn="Unit cell-এর আকার ও মাপ নির্ধারণকারী ছয়টি সংখ্যা: a, b, c, α, β, γ।">The six numbers that fix the shape and size of the unit cell: a, b, c, α, β, γ.</dd>
+    <dt>Lattice constant</dt><dd data-bn="Cubic crystal-এ edge-এর দৈর্ঘ্য a। তিন edge-ই সমান বলে একটি সংখ্যাই যথেষ্ট। একক সাধারণত Å (1 Å = 10⁻¹⁰ m)।">In a cubic crystal, the edge length a. All three edges are equal, so one number is enough. Usually quoted in Å (1 Å = 10⁻¹⁰ m).</dd>
+    <dt>Crystal system</dt><dd data-bn="Lattice parameters-এর সম্পর্ক (কোন edge সমান, কোন কোণ 90°) অনুযায়ী crystal-এর শ্রেণি। মোট ৭টি।">A class of crystals defined by the relations among the lattice parameters (which edges are equal, which angles are 90°). There are 7.</dd>
+    <dt>Cubic</dt><dd data-bn="তিন edge সমান এবং তিন কোণই 90°: একটি নিখুঁত ঘনক।">All three edges equal and all angles 90°: a perfect cube.</dd>
+    <dt>Hexagonal</dt><dd data-bn="দুটি edge সমান (a = b), তৃতীয়টি (c) আলাদা; a ও b-এর মধ্যকার কোণ 120°।">Two edges equal (a = b), the third (c) different; the angle between a and b is 120°.</dd>
+    <dt>Edge</dt><dd data-bn="Unit cell-এর একটি ধার, অর্থাৎ দুই corner-এর মধ্যকার রেখা।">One side of the unit cell, the line between two corners.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 1">Class note p.1</a>; <a href="#ref-1">[1]</a> Ch. 1 (Fundamental Types of Lattices); <a href="#ref-2">[2]</a> Ch. 4; <a href="#ref-10">[10]</a></p>
+</section>
+
+<!-- ================= 4 ================= -->
+<section id="s4">
+  <h2><span class="num">4</span><span data-bn="Cubic system: SC, BCC, FCC">Cubic system: SC, BCC, FCC</span></h2>
+  <p data-bn="Cubic system-এ তিনটি সাধারণ unit cell আছে। ছবিতে নীল atom corner-এ, কমলা atom body centre-এ এবং সবুজ atom face centre-এ।">The cubic system has three common unit cells. In the drawings, blue atoms are at corners, orange at the body centre, and green at the face centres.</p>
+  <div class="grid">
+    <figure class="panel"><div id="cube-sc"></div><figcaption><b>Simple cubic (SC)</b><br><span data-bn="শুধু corner">corners only</span></figcaption></figure>
+    <figure class="panel"><div id="cube-bcc"></div><figcaption><b>Body-centered cubic (BCC)</b><br><span data-bn="corner + body centre">corners + body centre</span></figcaption></figure>
+    <figure class="panel"><div id="cube-fcc"></div><figcaption><b>Face-centered cubic (FCC)</b><br><span data-bn="corner + face centre">corners + face centres</span></figcaption></figure>
+  </div>
+
+  <h3 data-bn="Diagonal: কোথায় atom-রা পরস্পরকে ছোঁয়">Diagonals: the directions where atoms touch</h3>
+  <p data-bn="BCC ও FCC-তে atom-রা cell-এর edge বরাবর নয়, diagonal বরাবর ছোঁয়। তাই দুটি diagonal-এর দৈর্ঘ্য জানা দরকার। Pythagoras theorem দিয়ে:">In BCC and FCC the atoms touch along a diagonal, not along an edge, so you need the lengths of two diagonals. By the Pythagorean theorem:</p>
+  <div class="grid2">
+    <figure class="panel"><div id="cube-fdiag"></div><figcaption><b>Face diagonal</b> = √(a² + a²) = <b>√2 · a</b></figcaption></figure>
+    <figure class="panel"><div id="cube-bdiag"></div><figcaption><b>Body diagonal</b> = √((√2·a)² + a²) = √(3a²) = <b>√3 · a</b></figcaption></figure>
+  </div>
+
+  <h3 data-bn="তিনটি cell-এর তুলনা">Comparing the three cells</h3>
+  <div class="scroll"><table>
+    <tr><th>Cell</th><th data-bn="Atom কোথায় থাকে">Atoms sit at</th><th data-bn="প্রতি cell-এ atom">Atoms per cell</th><th>Coordination number</th><th data-bn="যে দিকে atom ছোঁয়">Atoms touch along</th><th data-bn="a ও r-এর সম্পর্ক">a in terms of r</th><th>Nearest-neighbour distance</th></tr>
+    <tr><td>SC</td><td data-bn="Corner">corners</td><td>1</td><td>6</td><td>edge</td><td>a = 2r</td><td>a</td></tr>
+    <tr><td>BCC</td><td data-bn="Corner + body centre">corners + body centre</td><td>2</td><td>8</td><td>body diagonal</td><td>√3·a = 4r</td><td>√3·a / 2</td></tr>
+    <tr><td>FCC</td><td data-bn="Corner + face centre">corners + face centres</td><td>4</td><td>12</td><td>face diagonal</td><td>√2·a = 4r</td><td>a / √2</td></tr>
+  </table></div>
+  <p data-bn="প্রতিটি ক্ষেত্রেই nearest-neighbour distance = 2r, কারণ নিকটতম দুটি atom পরস্পরকে ছোঁয়।">In every case the nearest-neighbour distance equals 2r, because the two closest atoms touch.</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Simple cubic (SC)</dt><dd data-bn="শুধু ৮টি corner-এ atom আছে, আর কোথাও নেই। এটি primitive cubic নামেও পরিচিত।">Atoms at the 8 corners only. Also called primitive cubic.</dd>
+    <dt>Body-centered cubic (BCC)</dt><dd data-bn="৮টি corner এবং cube-এর ঠিক কেন্দ্রে একটি অতিরিক্ত atom।">Atoms at the 8 corners plus one extra atom at the very centre of the cube.</dd>
+    <dt>Face-centered cubic (FCC)</dt><dd data-bn="৮টি corner এবং ৬টি face-এর প্রতিটির কেন্দ্রে একটি করে atom।">Atoms at the 8 corners plus one at the centre of each of the 6 faces.</dd>
+    <dt>Corner atom / face-centre atom / body-centre atom</dt><dd data-bn="Atom-টি cube-এর কোণায়, কোনো face-এর মাঝখানে, বা cube-এর ভেতরের কেন্দ্রে বসে আছে।">The atom sits on a corner of the cube, in the middle of a face, or at the centre inside the cube.</dd>
+    <dt>Atomic radius (r)</dt><dd data-bn="Atom-কে একটি শক্ত গোলক ধরলে তার ব্যাসার্ধ। দুটি স্পর্শরত atom-এর কেন্দ্রের দূরত্ব 2r।">The radius of an atom treated as a hard sphere. Two touching atoms have centres 2r apart.</dd>
+    <dt>Coordination number (CN)</dt><dd data-bn="একটি atom সরাসরি যতগুলো নিকটতম neighbour atom-কে স্পর্শ করে।">The number of nearest neighbour atoms that one atom touches directly.</dd>
+    <dt>Nearest-neighbour distance</dt><dd data-bn="একটি atom ও তার নিকটতম neighbour-এর কেন্দ্রের মধ্যকার দূরত্ব।">The distance between the centres of an atom and its closest neighbour.</dd>
+    <dt>Face diagonal</dt><dd data-bn="একটি face-এর এক corner থেকে বিপরীত corner পর্যন্ত রেখা; দৈর্ঘ্য √2·a।">The line across one face, from a corner to the opposite corner; length √2·a.</dd>
+    <dt>Body diagonal</dt><dd data-bn="Cube-এর ভেতর দিয়ে এক corner থেকে সবচেয়ে দূরের corner পর্যন্ত রেখা; দৈর্ঘ্য √3·a।">The line through the inside of the cube from one corner to the farthest corner; length √3·a.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 1, 2">Class note pp.1–2</a>; <a href="#ref-1">[1]</a> Ch. 1 (Simple Crystal Structures); <a href="#ref-3">[3]</a>. <span data-bn="Nearest-neighbour সূত্রগুলো জ্যামিতি থেকে নেওয়া, note-এ নেই।">The nearest-neighbour formulas follow from the geometry; they are not in the note.</span></p>
+</section>
+
+<!-- ================= 5 ================= -->
+<section id="s5">
+  <h2><span class="num">5</span><span data-bn="Unit cell-এ atom গণনা">Counting atoms per unit cell</span></h2>
+  <p data-bn="Corner বা face-এর একটি atom আশেপাশের অনেকগুলো cell-এর সাথে ভাগ হয়ে থাকে। তাই এই cell-এর ভাগে atom-টির শুধু একটি অংশ পড়ে।">An atom on a corner or a face is shared with neighbouring cells, so only a fraction of it belongs to this cell.</p>
+  <div class="scroll"><table>
+    <tr><th data-bn="অবস্থান">Position</th><th data-bn="কতগুলো cell ভাগ করে">Shared by</th><th data-bn="এক cell-এর ভাগ">Share inside one cell</th><th data-bn="কেন">Why</th></tr>
+    <tr><td data-bn="Corner (প্রতি cell-এ ৮টি)">Corner (8 per cell)</td><td data-bn="৮টি cell">8 cells</td><td>1/8</td><td data-bn="একটি corner-এ ৮টি ঘনক মিলিত হয়।">Eight cubes meet at one corner.</td></tr>
+    <tr><td data-bn="Face centre (প্রতি cell-এ ৬টি)">Face centre (6 per cell)</td><td data-bn="২টি cell">2 cells</td><td>1/2</td><td data-bn="একটি face দুটি পাশাপাশি cell-এর মাঝে সাধারণ।">A face is common to two neighbouring cubes.</td></tr>
+    <tr><td data-bn="Body centre (প্রতি cell-এ ১টি)">Body centre (1 per cell)</td><td data-bn="১টি cell">1 cell</td><td>1</td><td data-bn="পুরোপুরি cell-এর ভেতরে।">Fully inside the cell.</td></tr>
+    <tr><td data-bn="Edge (cubic cell-এ atom নেই)">Edge (not used in these cubic cells)</td><td data-bn="৪টি cell">4 cells</td><td>1/4</td><td data-bn="সম্পূর্ণতার জন্য উল্লেখ করা হলো।">Listed for completeness.</td></tr>
+  </table></div>
+  <div class="formula">
+    n = N<sub>corner</sub>/8 + N<sub>face</sub>/2 + N<sub>body</sub><br><br>
+    SC: 8 × 1/8 = <b>1</b><br>
+    BCC: 8 × 1/8 + 1 = <b>2</b><br>
+    FCC: 8 × 1/8 + 6 × 1/2 = 1 + 3 = <b>4</b>
+  </div>
+  <div class="warn" data-bn="Note-এর pink রঙের টীকায় লেখা ‘corner + body centre = 4 atom’। এটি ভুল লেবেল: FCC হলো corner + face centre: 1 + (6 × 1/2 = 3) = 4। Body centre থাকে BCC-তে।">The pink margin note says "corner + body centre = 4 atom". That label is a slip: FCC is corner + face centre: 1 + (6 × 1/2 = 3) = 4. Body centre belongs to BCC.</div>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Shared atom</dt><dd data-bn="যে atom একাধিক unit cell-এর সীমানায় বসে আছে, তাই প্রতিটি cell তার একটি ভগ্নাংশ ‘পায়’।">An atom sitting on the boundary of more than one unit cell, so each cell ‘owns’ only a fraction of it.</dd>
+    <dt>Atoms per unit cell (n)</dt><dd data-bn="একটি cell-এর ভাগে সব ভগ্নাংশ যোগ করলে যে মোট atom-সংখ্যা পাওয়া যায় (এটিকে effective number-ও বলা যায়)। Density ও packing fraction হিসাবের জন্য এটাই লাগে।">The total you get after adding up all fractions that belong to one cell (also called the effective number). You need it for density and packing fraction.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 1, 2, 3">Class note pp.1–3</a>; <a href="#ref-3">[3]</a>; <a href="#ref-1">[1]</a> Ch. 1</p>
+</section>
+
+<!-- ================= 6 ================= -->
+<section id="s6">
+  <h2><span class="num">6</span><span data-bn="Packing fraction">Packing fraction</span></h2>
+  <p data-bn="Packing fraction বলে দেয় unit cell-এর আয়তনের কত অংশ atom দিয়ে ভরা। এখানে atom-কে r ব্যাসার্ধের শক্ত গোলক (hard sphere) ধরা হয়, যারা পরস্পরকে ছোঁয়।">Packing fraction tells you what part of the unit cell's volume is filled by atoms. Atoms are treated as hard spheres of radius r that touch each other.</p>
+  <div class="formula">Packing fraction = (volume of atoms in the cell) ÷ (volume of the cell) = n · (4/3)π r³ ÷ a³</div>
+
+  <h3 data-bn="ধাপ ১: যেখানে atom ছোঁয়, সেখান থেকে a-কে r দিয়ে প্রকাশ">Step 1: express a in terms of r (where atoms touch)</h3>
+  <div class="grid">
+    <figure class="panel"><div id="geo-sc"></div><figcaption><b>SC:</b> <span data-bn="Atom edge বরাবর ছোঁয়">atoms touch along the edge</span><br>a = 2r</figcaption></figure>
+    <figure class="panel"><div id="geo-bcc"></div><figcaption><b>BCC:</b> <span data-bn="Body diagonal বরাবর ছোঁয়">atoms touch along the body diagonal</span><br>√3·a = 4r, a = 4r/√3</figcaption></figure>
+    <figure class="panel"><div id="geo-fcc"></div><figcaption><b>FCC:</b> <span data-bn="Face diagonal বরাবর ছোঁয়">atoms touch along the face diagonal</span><br>√2·a = 4r, a = 4r/√2</figcaption></figure>
+  </div>
+  <p data-bn="Diagonal 4r কেন? Diagonal বরাবর হাঁটলে প্রথমে একটি corner atom-এর অর্ধেক (r), তারপর মাঝের একটি পূর্ণ atom (2r), তারপর আরেক প্রান্তের অর্ধেক atom (r) পাওয়া যায়: r + 2r + r = 4r।">Why is the diagonal 4r? Walking along the diagonal you cross half a corner atom (r), one whole middle atom (2r), and half of the atom at the far end (r): r + 2r + r = 4r.</p>
+
+  <h3 data-bn="ধাপ ২: বসিয়ে হিসাব">Step 2: substitute and calculate</h3>
+  <p><b>SC</b> (n = 1, a = 2r)</p>
+  <div class="formula">PF = (4/3 π r³) ÷ (2r)³ = (4/3 π r³) ÷ 8r³ = π/6 = 0.5236 → <b>52.36%</b></div>
+  <p data-bn="বাকি প্রায় 47.64% জায়গা ফাঁকা (void)।">The remaining ≈ 47.64% of the cell is empty space (void).</p>
+  <p><b>BCC</b> (n = 2, a = 4r/√3)</p>
+  <div class="formula">PF = 2 × (4/3 π r³) ÷ (4r/√3)³ = (8/3 π r³) ÷ (64 r³ / 3√3) = π√3/8 = 0.6802 → <b>≈ 68.0%</b></div>
+  <p><b>FCC</b> (n = 4, a = 4r/√2 = 2√2·r)</p>
+  <div class="formula">PF = 4 × (4/3 π r³) ÷ (2√2·r)³ = (16/3 π r³) ÷ (16√2·r³) = π/(3√2) = 0.7405 → <b>≈ 74.0%</b></div>
+
+  <figure class="panel wide"><div id="fig-bars"></div><figcaption data-bn="Packing fraction তুলনা">Packing fraction compared</figcaption></figure>
+  <div class="scroll"><table>
+    <tr><th>Cell</th><th data-bn="Packing fraction">Packing fraction</th><th data-bn="ফাঁকা অংশ (1 − PF)">Empty fraction (1 − PF)</th><th>CN</th></tr>
+    <tr><td>SC</td><td>0.5236</td><td>0.4764</td><td>6</td></tr>
+    <tr><td>BCC</td><td>0.6802</td><td>0.3198</td><td>8</td></tr>
+    <tr><td>FCC</td><td>0.7405</td><td>0.2595</td><td>12</td></tr>
+  </table></div>
+  <div class="key" data-bn="মনে রাখার ক্রম: FCC (74%) &gt; BCC (68%) &gt; SC (52%)। Cell-এ atom বেশি এবং স্পর্শরত neighbour বেশি (CN 12 &gt; 8 &gt; 6) হলে packing বেশি ঘন হয়।"><b>Order to remember:</b> FCC (74%) &gt; BCC (68%) &gt; SC (52%). More atoms per cell and more touching neighbours (CN 12 &gt; 8 &gt; 6) mean tighter packing.</div>
+  <h3><span data-bn="একটি বাড়তি তথ্য">An extra fact</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="সমান আকারের গোলক দিয়ে সবচেয়ে ঘনভাবে সাজালে packing fraction হয় π/(3√2) ≈ 74.05%। FCC এবং hexagonal close-packed (hcp) দুটোই এই সর্বোচ্চ মান দেয়। এ কারণে এদের close-packed structure বলে। এর চেয়ে ঘন সাজানো সম্ভব নয়, এই প্রমাণটি Kepler conjecture নামে পরিচিত (Hales, 2005)।">Packing equal spheres as tightly as possible gives π/(3√2) ≈ 74.05%. Both FCC and hexagonal close-packed (hcp) reach this maximum, which is why they are called close-packed structures. The proof that nothing denser exists is the Kepler conjecture, proved by Hales in 2005.</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Packing fraction (PF)</dt><dd data-bn="Atom-এর মোট আয়তন ÷ unit cell-এর আয়তন। 0 ও 1-এর মধ্যে একটি সংখ্যা, শতাংশেও লেখা যায়। Atomic packing factor (APF) নামেও পরিচিত।">Volume of atoms ÷ volume of the unit cell. A number between 0 and 1, or a percentage. Also called atomic packing factor (APF).</dd>
+    <dt>Hard-sphere model</dt><dd data-bn="Atom-কে নরম নয়, কঠিন, না-চাপা গোলক ধরা, যাতে জ্যামিতি সহজ হয়।">Treating atoms as solid spheres that cannot be squeezed, which keeps the geometry simple.</dd>
+    <dt>Volume of a sphere</dt><dd data-bn="r ব্যাসার্ধের গোলকের আয়তন = (4/3)π r³।">For radius r, volume = (4/3)π r³.</dd>
+    <dt>Volume of the unit cell</dt><dd data-bn="Cube-এর ক্ষেত্রে a³। এখানে a হলো lattice constant।">For a cube it is a³, where a is the lattice constant.</dd>
+    <dt>Void</dt><dd data-bn="Atom-দের মাঝের ফাঁকা জায়গা। Void fraction = 1 − PF।">The empty space between atoms. Void fraction = 1 − PF.</dd>
+    <dt>Close-packed</dt><dd data-bn="যে structure-এ equal গোলক সম্ভাব্য সর্বোচ্চ ঘনত্বে (74.05%) সাজানো।">A structure in which equal spheres are packed as densely as possible (74.05%).</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 2, 3">Class note pp.2–3</a>; <a href="#ref-1">[1]</a> Ch. 1; <a href="#ref-3">[3]</a>; <a href="#ref-11">[11]</a> (Kepler conjecture). <span data-bn="Note-এ BCC 68.01% ও FCC 74.04% লেখা; সঠিক মান 68.02% ও 74.05% (rounding-এর পার্থক্য)।">The note has BCC 68.01% and FCC 74.04%; the exact values are 68.02% and 74.05% (a rounding difference).</span></p>
+</section>
+
+<!-- ================= 7 ================= -->
+<section id="s7">
+  <h2><span class="num">7</span><span data-bn="Miller indices">Miller indices</span></h2>
+  <p data-bn="Miller indices (h k l) তিনটি ছোট পূর্ণসংখ্যা দিয়ে crystal-এর একটি plane-এর নাম দেয়। Crystal-এর বিভিন্ন plane-এ atom-এর সাজানো আলাদা, তাই plane চিহ্নিত করা দরকার।">Miller indices (h k l) name a plane in a crystal with three small whole numbers. Atoms are arranged differently on different planes, so planes must be identified.</p>
+  <h3 data-bn="তিনটি ধাপ">Three steps</h3>
+  <ol class="steps">
+    <li data-bn="<b>Intercept:</b> Plane x, y, z axis-কে কোথায় কাটে দেখো (cell-এর edge-কে একক ধরে)। যে axis-এর সাথে plane সমান্তরাল, সেখানে intercept ∞।"><b>Intercepts:</b> note where the plane cuts the x, y and z axes (use the cell edge as the unit). If the plane is parallel to an axis, that intercept is ∞.</li>
+    <li data-bn="<b>Reciprocal:</b> প্রতিটি intercept উল্টে দাও (1/∞ = 0)।"><b>Reciprocals:</b> invert each intercept (1/∞ = 0).</li>
+    <li data-bn="<b>Fraction মুছে ফেলো:</b> ভগ্নাংশ থাকলে সবগুলোকে এমন ক্ষুদ্রতম সংখ্যা দিয়ে গুণ করো যাতে সবই পূর্ণসংখ্যা হয়।"><b>Clear fractions:</b> if any fraction remains, multiply all three by the smallest number that makes them whole numbers.</li>
+  </ol>
+  <div class="scroll"><table>
+    <tr><th data-bn="উদাহরণ">Example</th><th data-bn="ধাপ ১: intercept">1. Intercepts</th><th data-bn="ধাপ ২: reciprocal">2. Reciprocals</th><th data-bn="ধাপ ৩: পূর্ণসংখ্যা">3. Whole numbers</th><th>(h k l)</th></tr>
+    <tr><td data-bn="Note-এর উদাহরণ">Your note's example</td><td>(1, 2, 1)</td><td>(1, 1/2, 1)</td><td data-bn="২ দিয়ে গুণ">× 2</td><td><b>(2 1 2)</b></td></tr>
+    <tr><td data-bn="উদাহরণ ২ (যোগ করা)">Example 2 (added)</td><td>(2, 1, ∞)</td><td>(1/2, 1, 0)</td><td data-bn="২ দিয়ে গুণ">× 2</td><td><b>(1 2 0)</b></td></tr>
+    <tr><td data-bn="উদাহরণ ৩ (যোগ করা)">Example 3 (added)</td><td>(1/2, 1, 1/3)</td><td>(2, 1, 3)</td><td data-bn="দরকার নেই">not needed</td><td><b>(2 1 3)</b></td></tr>
+  </table></div>
+  <p data-bn="Reciprocal কেন নেওয়া হয়? কোনো axis-এর সাথে plane সমান্তরাল হলে intercept অসীম হয়, যা ব্যবহার করা অসুবিধাজনক। Reciprocal নিলে সেটি সহজ 0 হয়ে যায়।">Why take reciprocals? When a plane is parallel to an axis, its intercept is infinite, which is awkward to use. Taking the reciprocal turns it into a simple 0.</p>
+
+  <h3 data-bn="Cube-এর plane-গুলো">Planes of the cube</h3>
+  <p data-bn="Axis: x ডানে, y পাতার ভেতরে, z ওপরে। ছায়া দেওয়া অংশটি plane।">Axes: x points right, y goes into the page, z points up. The shaded area is the plane.</p>
+  <div class="grid">
+    <figure class="panel"><div id="m100"></div><figcaption><b>(1 0 0)</b><br><span data-bn="x-কে 1-এ কাটে; y, z-এর সমান্তরাল">cuts x at 1; parallel to y and z</span></figcaption></figure>
+    <figure class="panel"><div id="m010"></div><figcaption><b>(0 1 0)</b><br><span data-bn="y-কে 1-এ কাটে; x, z-এর সমান্তরাল">cuts y at 1; parallel to x and z</span></figcaption></figure>
+    <figure class="panel"><div id="m001"></div><figcaption><b>(0 0 1)</b><br><span data-bn="z-কে 1-এ কাটে; x, y-এর সমান্তরাল">cuts z at 1; parallel to x and y</span></figcaption></figure>
+    <figure class="panel"><div id="m110"></div><figcaption><b>(1 1 0)</b><br><span data-bn="x ও y-কে 1-এ কাটে; z-এর সমান্তরাল">cuts x and y at 1; parallel to z</span></figcaption></figure>
+    <figure class="panel"><div id="m101"></div><figcaption><b>(1 0 1)</b><br><span data-bn="x ও z-কে 1-এ কাটে; y-এর সমান্তরাল">cuts x and z at 1; parallel to y</span></figcaption></figure>
+    <figure class="panel"><div id="m111"></div><figcaption><b>(1 1 1)</b><br><span data-bn="তিনটি axis-ই 1-এ কাটে">cuts all three axes at 1</span></figcaption></figure>
+  </div>
+
+  <h3><span data-bn="আরও কিছু notation">More notation</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <ul>
+    <li data-bn="<b>ঋণাত্মক index:</b> intercept ঋণাত্মক হলে সংখ্যার ওপর দাগ (bar) দিয়ে লেখা হয়, যেমন (1 1̄ 0)।"><b>Negative index:</b> a negative intercept is written with a bar over the number, for example (1 1̄ 0).</li>
+    <li data-bn="<b>{h k l}:</b> cubic crystal-এ symmetry-র কারণে যে plane-গুলো একই রকম (যেমন (100), (010), (001)), তাদের পরিবারকে {100} লেখা হয়।"><b>{h k l}:</b> in a cubic crystal, planes that are equivalent by symmetry, such as (100), (010) and (001), form a family written {100}.</li>
+    <li data-bn="<b>[u v w]:</b> বর্গ বন্ধনী দিয়ে plane নয়, একটি direction বোঝায়। Cubic crystal-এ [h k l] direction ঠিক (h k l) plane-এর ওপর লম্ব।"><b>[u v w]:</b> square brackets name a direction, not a plane. In a cubic crystal the direction [h k l] is perpendicular to the plane (h k l).</li>
+  </ul>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Plane</dt><dd data-bn="Crystal-এর ভেতরে atom-দের একটি সমতল স্তর।">A flat layer of atoms inside the crystal.</dd>
+    <dt>Axis (x, y, z)</dt><dd data-bn="Unit cell-এর একটি corner থেকে তিনটি edge বরাবর আঁকা তিনটি রেখা, যা মাপার মূল।">The three lines drawn from one corner of the unit cell along its three edges; they are the reference for measuring.</dd>
+    <dt>Intercept</dt><dd data-bn="যে বিন্দুতে plane কোনো axis-কে কাটে, cell-এর edge-এর ভগ্নাংশ বা গুণিতক হিসেবে মাপা।">The point where the plane cuts an axis, measured as a fraction or multiple of the cell edge.</dd>
+    <dt>Reciprocal</dt><dd data-bn="কোনো সংখ্যার উল্টো রূপ: x-এর reciprocal 1/x।">The inverse of a number: the reciprocal of x is 1/x.</dd>
+    <dt>Miller indices (h k l)</dt><dd data-bn="তিনটি ক্ষুদ্রতম পূর্ণসংখ্যা, যা reciprocal-intercept-এর অনুপাত। এটিই plane-এর নাম।">The three smallest whole numbers in the ratio of the reciprocal intercepts. This is the name of the plane.</dd>
+    <dt>Parallel plane</dt><dd data-bn="যে plane axis-কে কখনো কাটে না। এর intercept ∞, তাই index 0।">A plane that never meets an axis. Its intercept is ∞, so its index is 0.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 3, 4, 6">Class note pp.3, 4, 6</a>; <a href="#ref-1">[1]</a> Ch. 1 (Index System for Crystal Planes); <a href="#ref-5">[5]</a> (origin of the notation); <a href="#ref-3">[3]</a></p>
+</section>
+
+<!-- ================= 8 ================= -->
+<section id="s8">
+  <h2><span class="num">8</span><span data-bn="Single crystal বনাম polycrystal">Single crystal vs polycrystal</span></h2>
+  <ul>
+    <li data-bn="<b>Single crystal:</b> একটি অবিচ্ছিন্ন lattice, পুরো নমুনায় একই orientation।"><b>Single crystal:</b> one continuous lattice with the same orientation throughout the sample.</li>
+    <li data-bn="<b>Polycrystal:</b> অনেক ছোট ছোট crystal দিয়ে গঠিত, প্রতিটির নিজস্ব orientation। এই ছোট crystal-গুলোর নাম <b>grain</b>। অর্থাৎ polycrystal-এর ভেতরের প্রতিটি grain আসলে একটি করে single crystal।"><b>Polycrystal:</b> built from many small crystals, each with its own orientation. These small crystals are the <b>grains</b>. In other words, every grain inside a polycrystal is itself a single crystal.</li>
+    <li data-bn="যে তলে grain-গুলো মিলিত হয়, তার নাম <b>grain boundary</b>।">The surfaces where grains meet are called <b>grain boundaries</b>.</li>
+  </ul>
+  <div class="grid2">
+    <figure class="panel"><div id="fig-single"></div><figcaption data-bn="Single crystal: সব তীর (lattice direction) এক দিকে">Single crystal: all arrows (lattice directions) agree</figcaption></figure>
+    <figure class="panel"><div id="fig-poly"></div><figcaption data-bn="Polycrystal: চারটি grain, চার রকম orientation">Polycrystal: four grains, four orientations</figcaption></figure>
+  </div>
+  <h3><span data-bn="একটি বাড়তি তথ্য">An extra fact</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="Single crystal-এর property সাধারণত দিকের ওপর নির্ভর করে (anisotropic)। Polycrystal-এ grain-গুলো এলোমেলো দিকে থাকায় গড়ে property প্রায় সব দিকে এক হয়ে যায় (isotropic)।">Properties of a single crystal usually depend on direction (anisotropic). In a polycrystal the grains point in random directions, so on average the properties come out almost the same in every direction (isotropic).</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Single crystal</dt><dd data-bn="একটিমাত্র crystal দিয়ে গঠিত নমুনা, মাঝে কোনো grain boundary নেই।">A sample made of one crystal, with no grain boundaries inside.</dd>
+    <dt>Polycrystal</dt><dd data-bn="অসংখ্য ছোট crystal (grain) একসাথে জোড়া লেগে তৈরি নমুনা।">A sample made of many small crystals (grains) joined together.</dd>
+    <dt>Grain</dt><dd data-bn="Polycrystal-এর ভেতরের একটি single crystal অংশ।">One single-crystal region inside a polycrystal.</dd>
+    <dt>Grain boundary</dt><dd data-bn="দুটি grain-এর মিলনস্থল, যেখানে lattice-এর দিক হঠাৎ বদলে যায়।">The interface between two grains where the lattice direction changes abruptly.</dd>
+    <dt>Orientation</dt><dd data-bn="Lattice-এর axis কোন দিকে মুখ করে আছে।">The direction in which the lattice axes point.</dd>
+    <dt>Anisotropic / isotropic</dt><dd data-bn="Anisotropic: দিক বদলালে property বদলায়। Isotropic: সব দিকে একই।">Anisotropic: properties change with direction. Isotropic: the same in every direction.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 4">Class note p.4</a>; <a href="#ref-3">[3]</a>; <a href="#ref-1">[1]</a> Ch. 1, Ch. 19</p>
+</section>
+
+<!-- ================= 9 ================= -->
+<section id="s9">
+  <h2><span class="num">9</span><span data-bn="Crystal defects">Crystal defects</span></h2>
+  <p data-bn="বাস্তব crystal কখনোই নিখুঁত নয়। Perfect pattern থেকে যেকোনো বিচ্যুতিকে defect বলে। Defect-কে তার মাত্রা (dimension) অনুযায়ী ভাগ করা হয়:">Real crystals are never perfect. Any departure from the perfect pattern is a defect. Defects are classified by their dimension:</p>
+  <div class="scroll"><table>
+    <tr><th data-bn="শ্রেণি">Class</th><th data-bn="মাত্রা">Dimension</th><th data-bn="উদাহরণ">Examples</th></tr>
+    <tr><td>Point defect</td><td data-bn="০-মাত্রিক (একটি site)">0-D (one site)</td><td>vacancy, interstitial, Frenkel, Schottky</td></tr>
+    <tr><td>Line defect</td><td data-bn="১-মাত্রিক">1-D</td><td>dislocation <span class="tag added" data-bn="যোগ করা">added</span></td></tr>
+    <tr><td>Plane defect</td><td data-bn="২-মাত্রিক">2-D</td><td>grain boundary <span class="tag added" data-bn="যোগ করা">added</span></td></tr>
+  </table></div>
+
+  <h3 data-bn="Point defect: Frenkel ও Schottky">Point defects: Frenkel and Schottky</h3>
+  <div class="grid2">
+    <figure class="panel"><div id="fig-frenkel"></div><figcaption><b>Frenkel defect:</b> <span data-bn="একটি atom নিজের site ছেড়ে (vacancy, ড্যাশ-করা) interstitial position-এ চলে যায়">an atom leaves its site (vacancy, dashed) and moves into an interstitial position</span></figcaption></figure>
+    <figure class="panel"><div id="fig-schottky"></div><figcaption><b>Schottky defect:</b> <span data-bn="atom crystal ছেড়ে বেরিয়ে যায়, পেছনে vacancy (ড্যাশ-করা) থাকে">atoms leave the crystal altogether, leaving vacancies (dashed)</span></figcaption></figure>
+  </div>
+  <div class="scroll"><table>
+    <tr><th></th><th>Frenkel</th><th>Schottky</th></tr>
+    <tr><td data-bn="কী ঘটে">What happens</td><td data-bn="Atom crystal-এর ভেতরেই interstitial position-এ সরে যায়।">The atom moves to an interstitial position inside the crystal.</td><td data-bn="Atom lattice থেকে এবং crystal থেকে বেরিয়ে যায়।">The atoms leave the lattice and the crystal.</td></tr>
+    <tr><td>Density</td><td data-bn="<b>অপরিবর্তিত</b> (কিছুই হারায়নি)"><b>Stays the same</b> (nothing is lost)</td><td data-bn="<b>কমে</b> (mass কমে, আয়তন প্রায় একই)"><b>Decreases</b> (mass drops, volume stays about the same)</td></tr>
+    <tr><td data-bn="সাধারণত কোথায়">Typical in</td><td data-bn="যেসব crystal-এ একটি ion ছোট, যেমন silver halide">crystals with one small ion, such as silver halides</td><td data-bn="প্রায় সমান আকারের ion, যেমন NaCl, KCl">ions of similar size, such as NaCl and KCl</td></tr>
+  </table></div>
+  <div class="key" data-bn="মনে রাখার সূত্র: Frenkel = atom <i>সরে</i> যায়, তাই density অপরিবর্তিত। Schottky = atom <i>বেরিয়ে</i> যায়, তাই density কমে।"><b>Memory hook:</b> Frenkel = the atom <i>moves</i>, so density is unchanged. Schottky = atoms <i>leave</i>, so density drops.</div>
+  <p data-bn="Ionic crystal-এ Schottky defect সাধারণত একটি cation ও একটি anion-এর জোড়া অনুপস্থিত থাকা, যাতে মোট charge নিরপেক্ষ থাকে। এ কারণেই ছবিতে দুটি vacancy আঁকা (একটি ছোট, একটি বড় site)। <span class='tag added'>যোগ করা</span>">In an ionic crystal a Schottky defect is usually a missing cation–anion pair, so the crystal stays electrically neutral. That is why two vacancies are drawn (one small site, one large site). <span class="tag added">added</span></p>
+
+  <h3><span data-bn="Line ও plane defect">Line and plane defects</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <div class="grid2">
+    <figure class="panel"><div id="fig-disl"></div><figcaption><b>Edge dislocation:</b> <span data-bn="একটি বাড়তি অর্ধ-plane crystal-এর মাঝপথে শেষ হয়; শেষ প্রান্তটি line defect">an extra half-plane ends partway into the crystal; its edge is the line defect</span></figcaption></figure>
+    <figure class="panel"><div id="fig-poly2"></div><figcaption><b>Grain boundary:</b> <span data-bn="দুটি grain-এর মধ্যকার তল হলো plane defect">the surface between two grains is a plane defect</span></figcaption></figure>
+  </div>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Crystal defect</dt><dd data-bn="নিখুঁত পুনরাবৃত্ত pattern থেকে কোনো বিচ্যুতি।">Any departure from the perfect repeating pattern.</dd>
+    <dt>Point defect</dt><dd data-bn="এক বা দুটি atom-সাইটের মধ্যে সীমাবদ্ধ defect।">A defect confined to one or two atom sites.</dd>
+    <dt>Line defect</dt><dd data-bn="একটি রেখা বরাবর বিস্তৃত defect, যেমন dislocation।">A defect extending along a line, such as a dislocation.</dd>
+    <dt>Plane defect</dt><dd data-bn="একটি তল বরাবর বিস্তৃত defect, যেমন grain boundary।">A defect extending across a surface, such as a grain boundary.</dd>
+    <dt>Vacancy</dt><dd data-bn="যে lattice site-এ atom থাকার কথা, কিন্তু নেই।">A lattice site that should hold an atom but is empty.</dd>
+    <dt>Interstitial position</dt><dd data-bn="Atom-দের মাঝের ফাঁকা জায়গা, যেখানে সাধারণত কোনো atom বসে না। Defect-এ কোনো atom এখানে ঢুকে পড়তে পারে।">A gap between the regular atom sites where no atom normally sits. In a defect an atom can squeeze in here.</dd>
+    <dt>Frenkel defect</dt><dd data-bn="Vacancy এবং interstitial atom-এর জোড়া, একই atom থেকে তৈরি। Density বদলায় না।">A vacancy plus an interstitial atom created from the same atom. Density does not change.</dd>
+    <dt>Schottky defect</dt><dd data-bn="Atom (ionic crystal-এ ion-জোড়া) lattice ছেড়ে crystal-এর বাইরে চলে যায়; vacancy থেকে যায়। Density কমে।">An atom (an ion pair in an ionic crystal) leaves the lattice and the crystal, leaving vacancies. Density decreases.</dd>
+    <dt>Dislocation</dt><dd data-bn="Atom-সারির একটি ত্রুটি, যেখানে একটি বাড়তি অর্ধ-plane আটকে আছে। Crystal-কে নমনীয় (বাঁকানো যায়) করে তোলে।">A line error in the atom rows, where an extra half-plane is stuck in. It lets crystals deform (bend) under force.</dd>
+    <dt>Ionic crystal / cation / anion</dt><dd data-bn="Ionic crystal ধনাত্মক ion (cation) ও ঋণাত্মক ion (anion) দিয়ে তৈরি, যেমন K⁺ ও Cl⁻।">An ionic crystal is built from positive ions (cations) and negative ions (anions), such as K⁺ and Cl⁻.</dd>
+    <dt>Density</dt><dd data-bn="একক আয়তনে mass: ρ = mass ÷ volume।">Mass per unit volume: ρ = mass ÷ volume.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 4, 7">Class note pp.4, 7</a>; <a href="#ref-1">[1]</a> Ch. 20 (Point Defects), Ch. 21 (Dislocations); <a href="#ref-2">[2]</a> Ch. 30; <a href="#ref-3">[3]</a>; <a href="#ref-6">[6]</a> (Frenkel), <a href="#ref-7">[7]</a> (Wagner &amp; Schottky)</p>
+</section>
+
+<!-- ================= 10 ================= -->
+<section id="s10">
+  <h2><span class="num">10</span><span data-bn="Band theory of solids">Band theory of solids</span></h2>
+  <h3 data-bn="শুরু: একটি atom-এর electron">Starting point: electrons in one atom</h3>
+  <p data-bn="একটি বিচ্ছিন্ন atom-এর electron শুধু নির্দিষ্ট কিছু energy level-এ থাকতে পারে, মাঝের energy-তে নয়। Silicon (atomic number 14)-এর ১৪টি electron এভাবে সাজানো:">An electron in an isolated atom can only have certain definite energies, never the values in between. Silicon (atomic number 14) has 14 electrons arranged as:</p>
+  <div class="formula">Si (14) = 1s² 2s² 2p⁶ 3s² 3p²</div>
+  <ul>
+    <li data-bn="প্রতিটি অংশ <b>n + অক্ষর + সংখ্যা</b> আকারে পড়ো: 1s²-এ n = 1, s = subshell-এর ধরন, ওপরের 2 = ওই subshell-এ electron-সংখ্যা।">Read each piece as <b>shell number + letter + count</b>: in 1s², 1 is the shell (n = 1), s is the subshell type, and the superscript 2 is the number of electrons in it.</li>
+    <li data-bn="যোগফল: 2 + 2 + 6 + 2 + 2 = 14 ✓. সবচেয়ে বাইরের shell (n = 3)-এর 3s² 3p² অর্থাৎ ৪টি electron হলো valence electron।">Check: 2 + 2 + 6 + 2 + 2 = 14 ✓. The outermost shell (n = 3) holds 3s² 3p², that is 4 valence electrons.</li>
+    <li data-bn="আপনার note-এর ছবিতে 1st, 2nd, 3rd level যথাক্রমে n = 1, 2, 3 shell-এর energy level।">The 1st, 2nd and 3rd levels in your note's drawing are the energy levels of the shells n = 1, 2, 3.</li>
+  </ul>
+
+  <h3 data-bn="Level থেকে band">From levels to bands</h3>
+  <p data-bn="একটি silicon single crystal-এ বিপুল সংখ্যক atom থাকে (note-এ ~10²⁴ লেখা)। Pauli exclusion principle অনুযায়ী দুটি electron একই state-এ থাকতে পারে না, তাই atom-গুলো কাছে এলে প্রতিটি আলাদা level ভেঙে অনেকগুলো অত্যন্ত কাছাকাছি level হয়ে যায়। এই গুচ্ছটাই একটি <b>energy band</b>, অর্থাৎ energy-র একটি পটি (band of energy)।">A silicon single crystal contains an enormous number of atoms (the note writes ~10²⁴). By the Pauli exclusion principle two electrons cannot occupy the same state, so when atoms come close each single level splits into a huge number of extremely close levels. That cluster is an <b>energy band</b>: a band of energy.</p>
+  <figure class="panel wide"><div id="fig-band"></div><figcaption data-bn="অনেক atom একসাথে crystal গঠন করলে প্রতিটি atomic level একটি band-এ ছড়িয়ে যায়। ভেতরের level-এর band সরু, বাইরের level-এর band চওড়া।">When many atoms form a crystal, each atomic level spreads into a band. Inner levels give narrow bands, outer levels give wide bands.</figcaption></figure>
+  <p data-bn="বাইরের electron-দের orbital পাশের atom-এর সাথে বেশি মেশে, তাই তাদের band বেশি চওড়া হয়। ভেতরের electron নিজের atom-এর কাছেই বাঁধা, তাই তাদের band সরু।">Outer electrons overlap more with neighbouring atoms, so their bands are wider. Inner electrons stay tied to their own atom, so their bands are narrow.</p>
+  <h3><span data-bn="পরবর্তী ধাপ">What comes next</span><span class="tag added" data-bn="যোগ করা">added</span></h3>
+  <p data-bn="Note এখানেই থামে। এই chapter-এর পরের ধারণা: সর্বোচ্চ ভরা band হলো <b>valence band</b>, তার ওপরের ফাঁকা band হলো <b>conduction band</b>, আর দুটির মাঝের ফাঁকা energy-অঞ্চল <b>band gap (E<sub>g</sub>)</b>। এই gap-এর মাপ দিয়েই বোঝা যায় পদার্থটি conductor, semiconductor না insulator।">The note stops here. The next ideas in this chapter: the highest filled band is the <b>valence band</b>, the empty band above it is the <b>conduction band</b>, and the forbidden energy region between them is the <b>band gap (E<sub>g</sub>)</b>. The size of that gap decides whether a material is a conductor, a semiconductor or an insulator.</p>
+  <figure class="panel wide"><div id="fig-gaps"></div><figcaption data-bn="Conductor-এ band overlap করে; semiconductor-এ ছোট gap (Si-এর ~1.1 eV, 300 K-তে); insulator-এ বড় gap।">Conductors: the bands overlap. Semiconductors: a small gap (Si is about 1.1 eV at 300 K). Insulators: a large gap.</figcaption></figure>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Energy level</dt><dd data-bn="একটি বিচ্ছিন্ন atom-এ electron-এর অনুমোদিত নির্দিষ্ট energy।">A definite energy that an electron in an isolated atom is allowed to have.</dd>
+    <dt>Electron configuration</dt><dd data-bn="কোন shell ও subshell-এ কতগুলো electron আছে, তার তালিকা, যেমন 1s² 2s² ...">The list of how many electrons sit in each shell and subshell, e.g. 1s² 2s² …</dd>
+    <dt>Shell / subshell (s, p)</dt><dd data-bn="Shell: n = 1, 2, 3 ... দিয়ে চিহ্নিত স্তর। Subshell: shell-এর ভেতরের উপ-স্তর (s, p, d ...)। s-এ সর্বোচ্চ 2টি, p-তে সর্বোচ্চ 6টি electron থাকে।">Shell: a layer labelled n = 1, 2, 3 … Subshell: a sub-layer inside a shell (s, p, d …). An s subshell holds at most 2 electrons, a p subshell at most 6.</dd>
+    <dt>Valence electron</dt><dd data-bn="সবচেয়ে বাইরের shell-এর electron, যারা বন্ধন ও বৈদ্যুতিক আচরণ নির্ধারণ করে। Si-এ ৪টি।">An electron in the outermost shell; these decide bonding and electrical behaviour. Si has 4.</dd>
+    <dt>Pauli exclusion principle</dt><dd data-bn="দুটি electron একই quantum state-এ থাকতে পারে না। এ কারণেই level ভেঙে band হয়।">No two electrons can be in the same quantum state. This is why levels split into bands.</dd>
+    <dt>Energy band</dt><dd data-bn="অসংখ্য অতি-কাছাকাছি energy level মিলে তৈরি একটি অবিচ্ছিন্ন-প্রায় energy-অঞ্চল।">A nearly continuous range of energy made of a huge number of very close levels.</dd>
+    <dt>Valence band</dt><dd data-bn="Valence electron-দের ভরা band, সাধারণত 0 K-তে সর্বোচ্চ ভরা band।">The band filled by the valence electrons; usually the highest filled band at 0 K.</dd>
+    <dt>Conduction band</dt><dd data-bn="Valence band-এর ওপরের band। এখানকার electron মুক্তভাবে চলে বিদ্যুৎ বহন করে।">The band above the valence band. Electrons here move freely and carry current.</dd>
+    <dt>Band gap (E<sub>g</sub>)</dt><dd data-bn="Valence band-এর মাথা ও conduction band-এর তলার মধ্যকার energy-ব্যবধান, যেখানে কোনো level নেই।">The energy difference between the top of the valence band and the bottom of the conduction band, where no levels exist.</dd>
+    <dt>eV (electron-volt)</dt><dd data-bn="Energy-র একক: একটি electron 1 volt বিভবের মধ্য দিয়ে গেলে যে energy পায়। 1 eV ≈ 1.6 × 10⁻¹⁹ J।">A unit of energy: what one electron gains moving through 1 volt. 1 eV ≈ 1.6 × 10⁻¹⁹ J.</dd>
+    <dt>Conductor / semiconductor / insulator</dt><dd data-bn="Conductor: band overlap করে, বিদ্যুৎ ভালো চলে। Semiconductor: ছোট gap। Insulator: বড় gap, বিদ্যুৎ চলে না।">Conductor: overlapping bands, conducts well. Semiconductor: small gap. Insulator: large gap, does not conduct.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 5, 7">Class note pp.5, 7</a>; <a href="#ref-1">[1]</a> Ch. 7 (Energy Bands), Ch. 8 (Semiconductor Crystals); <a href="#ref-4">[4]</a> (Si band gap, valence/conduction band). <span data-bn="~10²⁴ সংখ্যাটি note থেকে নেওয়া; বাস্তবে Si-তে প্রায় 5 × 10²² atom প্রতি cm³-এ থাকে।">The ~10²⁴ figure is from the note; in practice Si holds about 5 × 10²² atoms per cm³.</span></p>
+</section>
+
+<!-- ================= 11 ================= -->
+<section id="s11">
+  <h2><span class="num">11</span><span data-bn="Worked problem: KCl-এর lattice constant">Worked problem: KCl lattice constant</span></h2>
+  <p data-bn="<b>প্রশ্ন।</b> KCl crystal-এর density 1.98 × 10³ kg/m³। Lattice constant এবং দুটি পাশাপাশি atom-এর মধ্যকার দূরত্ব বের করো। Lattice হলো face-centered cubic (FCC)।"><b>Problem.</b> The density of a KCl crystal is 1.98 × 10³ kg/m³. Find the lattice constant and the distance between two adjacent atoms. The lattice is face-centered cubic (FCC).</p>
+  <h3 data-bn="পরিকল্পনা">Plan</h3>
+  <p data-bn="Density = mass ÷ volume। Unit cell-এর mass বের করতে পারলে এবং density জানা থাকলে a³ পাওয়া যায়, তারপর a।">Density = mass ÷ volume. If we find the mass of one unit cell, and the density is given, we get a³, and then a.</p>
+  <ol class="steps">
+    <li data-bn="<b>এক formula unit-এর mass।</b> Molar mass M = 39 + 35.5 = 74.5 g/mol। Avogadro number N = 6.023 × 10²³ প্রতি mol। তাই এক KCl-এর mass = 74.5 ÷ (6.023 × 10²³) g।"><b>Mass of one formula unit.</b> Molar mass M = 39 + 35.5 = 74.5 g/mol. Avogadro number N = 6.023 × 10²³ per mol. So one KCl has mass 74.5 ÷ (6.023 × 10²³) g.</li>
+    <li data-bn="<b>এক unit cell-এ কয়টি KCl?</b> KCl-এর lattice FCC, আর FCC cell-এ ৪টি lattice point। প্রতি point-এ একটি K–Cl জোড়া (basis) বসে, তাই cell-এ <b>৪টি KCl</b> (4 K⁺ + 4 Cl⁻)।"><b>How many KCl in one cell?</b> The KCl lattice is FCC, and an FCC cell has 4 lattice points. One K–Cl pair (the basis) sits on each point, so the cell holds <b>4 KCl</b> (4 K⁺ + 4 Cl⁻).</li>
+    <li data-bn="<b>Unit cell-এর mass।</b><div class='formula'>m = 4 × 74.5 ÷ (6.023 × 10²³) g = 4.95 × 10⁻²² g = <b>4.95 × 10⁻²⁵ kg</b></div>"><b>Mass of the unit cell.</b><div class="formula">m = 4 × 74.5 ÷ (6.023 × 10²³) g = 4.95 × 10⁻²² g = <b>4.95 × 10⁻²⁵ kg</b></div></li>
+    <li data-bn="<b>Lattice constant।</b> ρ = m ÷ a³ থেকে<div class='formula'>a = (m/ρ)<sup>1/3</sup> = (4.95 × 10⁻²⁵ ÷ 1.98 × 10³)<sup>1/3</sup> = (2.50 × 10⁻²⁸)<sup>1/3</sup> ≈ 6.3 × 10⁻¹⁰ m = <b>6.3 Å</b></div>"><b>Lattice constant.</b> From ρ = m ÷ a³,<div class="formula">a = (m/ρ)<sup>1/3</sup> = (4.95 × 10⁻²⁵ ÷ 1.98 × 10³)<sup>1/3</sup> = (2.50 × 10⁻²⁸)<sup>1/3</sup> ≈ 6.3 × 10⁻¹⁰ m = <b>6.3 Å</b></div></li>
+    <li data-bn="<b>পাশাপাশি atom-এর দূরত্ব</b> (note-এ অসম্পূর্ণ ছিল, এখানে সম্পূর্ণ করা হলো)। KCl-এ cell-এর edge বরাবর K⁺ ও Cl⁻ পালাক্রমে বসে, তাই পাশাপাশি দূরত্ব<div class='formula'>d = a/2 ≈ <b>3.15 Å</b></div>একই ধরনের দুটি atom (K–K বা Cl–Cl) সবচেয়ে কাছে face diagonal বরাবর: a/√2 ≈ 4.45 Å।"><b>Distance between adjacent atoms</b> (unfinished in the note, completed here). In KCl, K⁺ and Cl⁻ alternate along a cell edge, so the neighbour distance is<div class="formula">d = a/2 ≈ <b>3.15 Å</b></div>Two atoms of the same kind (K–K or Cl–Cl) are closest along a face diagonal: a/√2 ≈ 4.45 Å.</li>
+  </ol>
+  <figure class="panel wide" style="max-width:360px;margin-left:auto;margin-right:auto"><div id="fig-kcl"></div><figcaption data-bn="Cell-এর একটি edge: K⁺ ও Cl⁻ পালাক্রমে, তাই পাশাপাশি দূরত্ব a/2">One cell edge: K⁺ and Cl⁻ alternate, so neighbours are a/2 apart</figcaption></figure>
+  <div class="key" data-bn="<b>উত্তর সঠিক কি না যাচাই:</b> পরীক্ষালব্ধ মান a ≈ 6.29 Å (629.2 pm)। আমাদের হিসাব 6.3 Å, পার্থক্য 0.2%-এরও কম। অর্থাৎ হিসাব নির্ভরযোগ্য।"><b>Sanity check:</b> the measured value is a ≈ 6.29 Å (629.2 pm). Our 6.3 Å differs by less than 0.2%, so the calculation is reliable.</div>
+  <h3 data-bn="সাধারণ সূত্র (যোগ করা)">General formula (added)</h3>
+  <div class="formula">ρ = n · M ÷ (N<sub>A</sub> · a³) &nbsp;⇒&nbsp; a = [ n · M ÷ (ρ · N<sub>A</sub>) ]<sup>1/3</sup></div>
+  <p data-bn="এখানে n = প্রতি cell-এ formula unit-এর সংখ্যা, M = molar mass (kg/mol), N<sub>A</sub> = Avogadro constant। Note 6.023 × 10²³ ব্যবহার করেছে; SI-এর সঠিক মান 6.02214076 × 10²³। 2 significant figure-এ উত্তর বদলায় না।">Here n = formula units per cell, M = molar mass (kg/mol), N<sub>A</sub> = the Avogadro constant. The note uses 6.023 × 10²³; the exact SI value is 6.02214076 × 10²³. The answer does not change at 2 significant figures.</p>
+
+  <p class="termhead" data-bn="Keywords ব্যাখ্যা">Keywords explained</p>
+  <dl class="terms">
+    <dt>Formula unit</dt><dd data-bn="Ionic compound-এর সবচেয়ে ছোট অনুপাত-একক, যেমন KCl = একটি K ও একটি Cl।">The smallest ratio-unit of an ionic compound, e.g. KCl = one K and one Cl.</dd>
+    <dt>Molar mass (M)</dt><dd data-bn="এক mole পদার্থের mass। KCl-এর জন্য 39 + 35.5 = 74.5 g/mol।">The mass of one mole of a substance. For KCl: 39 + 35.5 = 74.5 g/mol.</dd>
+    <dt>Avogadro number (N)</dt><dd data-bn="এক mole-এ কণার সংখ্যা: ≈ 6.022 × 10²³।">The number of particles in one mole: ≈ 6.022 × 10²³.</dd>
+    <dt>Mole</dt><dd data-bn="পদার্থের পরিমাণের একক; এক mole-এ Avogadro number-সংখ্যক কণা থাকে।">The unit for amount of substance; one mole holds an Avogadro number of particles.</dd>
+    <dt>Lattice constant</dt><dd data-bn="Cubic cell-এর edge-এর দৈর্ঘ্য a (Section 3 দেখো)।">The edge length a of the cubic cell (see Section 3).</dd>
+    <dt>Å (angstrom)</dt><dd data-bn="দৈর্ঘ্যের একক: 1 Å = 10⁻¹⁰ m, atom-এর মাপের কাছাকাছি।">A unit of length: 1 Å = 10⁻¹⁰ m, about the size of an atom.</dd>
+    <dt>Significant figures</dt><dd data-bn="একটি সংখ্যায় নির্ভরযোগ্য অঙ্কের সংখ্যা। উত্তর সাধারণত প্রশ্নের তথ্যের মতো সংখ্যক অঙ্কে লেখা হয়।">The number of reliable digits in a number. An answer is usually given with as many digits as the given data.</dd>
+  </dl>
+  <p class="src"><b data-bn="সূত্র:">Sources:</b> <a href="#ref-note" data-bn="Class note পৃ. 5">Class note p.5</a>; <a href="#ref-1">[1]</a> Ch. 1 (Sodium Chloride Structure: FCC lattice with a two-ion basis); <a href="#ref-8">[8]</a> (KCl a = 629.2 pm); <a href="#ref-9">[9]</a> (Avogadro constant)</p>
+</section>
+
+<!-- ================= 12 ================= -->
+<section id="s12">
+  <h2><span class="num">12</span><span data-bn="পরীক্ষার আগে যাচাই">Check before the exam</span></h2>
+  <div class="warn">
+    <b data-bn="Original note-এর ছোট ভুল ও ফাঁক">Small slips and gaps in the original note</b>
+    <ul>
+      <li data-bn="<b>FCC atom-সংখ্যা (pink টীকা):</b> ‘corner + body centre’ লেখা। FCC-তে হবে corner + <b>face</b> centre: 1 + 6 × 1/2 = 4।"><b>FCC atom count (pink margin note):</b> reads "corner + body centre". FCC is corner + <b>face</b> centres: 1 + 6 × 1/2 = 4.</li>
+      <li data-bn="<b>Rounding:</b> BCC = π√3/8 = 0.6802 (68.02%), note-এ 68.01%। FCC = 0.7405 (74.05%), note-এ 74.04%। ‘≈’ ব্যবহার করলে দুই দশমিকেও চলে।"><b>Rounding:</b> BCC = π√3/8 = 0.6802 (68.02%), the note has 68.01%. FCC = 0.7405 (74.05%), the note has 74.04%. Using "≈" makes either fine.</li>
+      <li data-bn="<b>KCl mass:</b> 4 × 74.5 ÷ 6.023 × 10²³ = 4.95 × 10⁻²⁵ kg, 4.92 নয়। চূড়ান্ত a ≈ 6.3 Å বদলায় না।"><b>KCl mass:</b> 4 × 74.5 ÷ 6.023 × 10²³ = 4.95 × 10⁻²⁵ kg, not 4.92. The final a ≈ 6.3 Å is unaffected.</li>
+      <li data-bn="<b>KCl প্রশ্ন:</b> ‘পাশাপাশি atom-এর দূরত্ব’ অংশ অসম্পূর্ণ ছিল; উত্তর a/2 ≈ 3.15 Å।"><b>KCl problem:</b> the "adjacent atoms" part was unfinished; the answer is a/2 ≈ 3.15 Å.</li>
+      <li data-bn="<b>FCC-এর coordination number:</b> note-এর লাইনটি কাটা; মান 12।"><b>Coordination number of FCC:</b> the line is cut off in the note; it is 12.</li>
+      <li data-bn="<b>Band theory ও crystal system:</b> দুটোই অসম্পূর্ণ (৭টির মধ্যে ২টি system; valence/conduction band ও gap অনুপস্থিত)। এই note-এ পূরণ করা হয়েছে (‘যোগ করা’ চিহ্নিত)।"><b>Band theory and crystal systems:</b> both are incomplete (2 of 7 systems; no valence/conduction band or gap). They are filled in above and marked "added".</li>
+    </ul>
+  </div>
+
+  <h3 data-bn="Self-test">Quick self-test</h3>
+  <ol class="steps">
+    <li data-bn="Schottky defect density কমায় কিন্তু Frenkel কমায় না কেন?">Why does a Schottky defect lower density while a Frenkel defect does not?</li>
+    <li data-bn="a = 2r ধরে SC-এর packing fraction না দেখে বের করো।">Derive the SC packing fraction from a = 2r without looking.</li>
+    <li data-bn="যে plane-এর intercept (2, 1, ∞), তার Miller indices কী?">Find the Miller indices of a plane with intercepts (2, 1, ∞).</li>
+    <li data-bn="BCC-তে a ও r-এর সম্পর্ক কী এবং কেন?">What is the relation between a and r for BCC, and why?</li>
+    <li data-bn="FCC cell-এ কয়টি atom? হিসাব দেখাও।">How many atoms does an FCC cell hold? Show the count.</li>
+  </ol>
+  <details>
+    <summary data-bn="উত্তর দেখো">Show answers</summary>
+    <ol class="steps">
+      <li data-bn="Frenkel: atom শুধু সরে যায়, তাই mass ও volume একই, density অপরিবর্তিত। Schottky: atom crystal ছেড়ে বেরিয়ে যায়, mass কমে কিন্তু volume প্রায় একই, তাই density কমে।">Frenkel: the atom only moves, so mass and volume stay the same and density is unchanged. Schottky: atoms leave the crystal, mass drops while volume stays about the same, so density falls.</li>
+      <li data-bn="PF = (4/3 π r³) ÷ (2r)³ = π/6 ≈ 0.5236 (52.36%)।">PF = (4/3 π r³) ÷ (2r)³ = π/6 ≈ 0.5236 (52.36%).</li>
+      <li data-bn="Reciprocal (1/2, 1, 0) → ২ দিয়ে গুণ → (1 2 0)।">Reciprocals (1/2, 1, 0) → multiply by 2 → (1 2 0).</li>
+      <li data-bn="√3·a = 4r, তাই a = 4r/√3। কারণ BCC-তে atom body diagonal বরাবর ছোঁয়, যার দৈর্ঘ্য √3·a এবং তাতে r + 2r + r = 4r।">√3·a = 4r, so a = 4r/√3. In BCC the atoms touch along the body diagonal, whose length is √3·a and which holds r + 2r + r = 4r.</li>
+      <li data-bn="8 × 1/8 + 6 × 1/2 = 1 + 3 = 4।">8 × 1/8 + 6 × 1/2 = 1 + 3 = 4.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- ================= 13 ================= -->
+<section id="s13">
+  <h2><span class="num">13</span><span data-bn="Formula sheet">Formula sheet</span></h2>
+  <div class="scroll"><table>
+    <tr><th data-bn="বিষয়">Topic</th><th data-bn="সূত্র">Formula</th></tr>
+    <tr><td data-bn="Cell-এ atom">Atoms per cell</td><td>n = N<sub>corner</sub>/8 + N<sub>face</sub>/2 + N<sub>body</sub></td></tr>
+    <tr><td>Face diagonal / body diagonal</td><td>√2·a &nbsp;/&nbsp; √3·a</td></tr>
+    <tr><td>SC</td><td>n = 1, CN = 6, a = 2r, PF = π/6 ≈ 52.36%</td></tr>
+    <tr><td>BCC</td><td>n = 2, CN = 8, a = 4r/√3, PF = π√3/8 ≈ 68.02%</td></tr>
+    <tr><td>FCC</td><td>n = 4, CN = 12, a = 4r/√2 = 2√2·r, PF = π/(3√2) ≈ 74.05%</td></tr>
+    <tr><td>Packing fraction</td><td>PF = n · (4/3)π r³ ÷ a³</td></tr>
+    <tr><td>Nearest-neighbour distance</td><td>SC: a &nbsp;|&nbsp; BCC: √3·a/2 &nbsp;|&nbsp; FCC: a/√2 &nbsp; (= 2r)</td></tr>
+    <tr><td>Miller indices</td><td>intercepts → reciprocals → smallest integers → (h k l)</td></tr>
+    <tr><td>Density of a crystal</td><td>ρ = n · M ÷ (N<sub>A</sub> · a³)</td></tr>
+    <tr><td>Lattice constant from density</td><td>a = [ n · M ÷ (ρ · N<sub>A</sub>) ]<sup>1/3</sup></td></tr>
+    <tr><td>Defects &amp; density</td><td data-bn="Frenkel: density অপরিবর্তিত। Schottky: density কমে।">Frenkel: density unchanged. Schottky: density decreases.</td></tr>
+    <tr><td>Si configuration</td><td>1s² 2s² 2p⁶ 3s² 3p² (14 electrons)</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= 14 ================= -->
+<section id="s14">
+  <h2><span class="num">14</span><span data-bn="Keyword index ও References">Keyword index and references</span></h2>
+  <h3 data-bn="Keyword index (ট্যাপ করলে ব্যাখ্যায় যাবে)">Keyword index (tap to jump to the explanation)</h3>
+  <div class="chips">
+    <a href="#s1">Amorphous <b>1</b></a><a href="#s1">Long-range order <b>1</b></a><a href="#s1">Short-range order <b>1</b></a>
+    <a href="#s2">Lattice <b>2</b></a><a href="#s2">Lattice point <b>2</b></a><a href="#s2">Basis <b>2</b></a><a href="#s2">Crystal structure <b>2</b></a><a href="#s2">Unit cell <b>2</b></a><a href="#s2">Primitive cell <b>2</b></a><a href="#s2">Centered cell <b>2</b></a><a href="#s2">Bravais lattice <b>2</b></a>
+    <a href="#s3">Lattice parameters <b>3</b></a><a href="#s3">Lattice constant <b>3</b></a><a href="#s3">Crystal system <b>3</b></a><a href="#s3">Cubic <b>3</b></a><a href="#s3">Hexagonal <b>3</b></a>
+    <a href="#s4">SC <b>4</b></a><a href="#s4">BCC <b>4</b></a><a href="#s4">FCC <b>4</b></a><a href="#s4">Atomic radius <b>4</b></a><a href="#s4">Coordination number <b>4</b></a><a href="#s4">Face diagonal <b>4</b></a><a href="#s4">Body diagonal <b>4</b></a>
+    <a href="#s5">Shared atom <b>5</b></a><a href="#s5">Atoms per unit cell <b>5</b></a>
+    <a href="#s6">Packing fraction <b>6</b></a><a href="#s6">Hard-sphere model <b>6</b></a><a href="#s6">Void <b>6</b></a><a href="#s6">Close-packed <b>6</b></a>
+    <a href="#s7">Plane <b>7</b></a><a href="#s7">Intercept <b>7</b></a><a href="#s7">Reciprocal <b>7</b></a><a href="#s7">Miller indices <b>7</b></a>
+    <a href="#s8">Single crystal <b>8</b></a><a href="#s8">Polycrystal <b>8</b></a><a href="#s8">Grain <b>8</b></a><a href="#s8">Grain boundary <b>8</b></a><a href="#s8">Anisotropic <b>8</b></a>
+    <a href="#s9">Point defect <b>9</b></a><a href="#s9">Line defect <b>9</b></a><a href="#s9">Plane defect <b>9</b></a><a href="#s9">Vacancy <b>9</b></a><a href="#s9">Interstitial <b>9</b></a><a href="#s9">Frenkel defect <b>9</b></a><a href="#s9">Schottky defect <b>9</b></a><a href="#s9">Dislocation <b>9</b></a><a href="#s9">Density <b>9</b></a>
+    <a href="#s10">Energy level <b>10</b></a><a href="#s10">Valence electron <b>10</b></a><a href="#s10">Pauli exclusion principle <b>10</b></a><a href="#s10">Energy band <b>10</b></a><a href="#s10">Valence band <b>10</b></a><a href="#s10">Conduction band <b>10</b></a><a href="#s10">Band gap <b>10</b></a><a href="#s10">eV <b>10</b></a>
+    <a href="#s11">Formula unit <b>11</b></a><a href="#s11">Molar mass <b>11</b></a><a href="#s11">Avogadro number <b>11</b></a><a href="#s11">Å <b>11</b></a>
+  </div>
+
+  <h3 data-bn="References">References</h3>
+  <p data-bn="Textbook-গুলো chapter পর্যায়ে উল্লেখ করা হয়েছে; তোমার edition-এর পৃষ্ঠা নম্বর আলাদা হতে পারে।" style="font-size:.93rem;color:var(--muted)">Textbooks are cited at chapter level; page numbers differ between editions.</p>
+  <ol class="refs">
+    <li id="ref-note"><b data-bn="মূল সূত্র:">Primary source:</b> <span data-bn="Yeasir Sir-এর Solid State Physics class note (হাতে লেখা, ৭ পৃষ্ঠার scan)। এই page-এর সব ‘note থেকে’ তথ্য এখান থেকে।">Yeasir Sir, Solid State Physics class notes (handwritten, 7-page scan). All "from your note" content comes from here.</span></li>
+    <li id="ref-1">[1] Kittel, C. <i>Introduction to Solid State Physics</i>, 8th ed. Wiley, 2005. Ch. 1 Crystal Structure; Ch. 7 Energy Bands; Ch. 8 Semiconductor Crystals; Ch. 19 Noncrystalline Solids; Ch. 20 Point Defects; Ch. 21 Dislocations.</li>
+    <li id="ref-2">[2] Ashcroft, N. W. &amp; Mermin, N. D. <i>Solid State Physics</i>. Holt, Rinehart and Winston, 1976. Ch. 4 Classification of Bravais Lattices and Crystal Structures; Ch. 30 Defects in Crystals.</li>
+    <li id="ref-3">[3] Callister, W. D. &amp; Rethwisch, D. G. <i>Materials Science and Engineering: An Introduction</i>. Wiley. Chapters on the structure of crystalline solids (atomic packing factor, SC/BCC/FCC, Miller indices, single and polycrystals) and on imperfections in solids.</li>
+    <li id="ref-4">[4] Streetman, B. G. &amp; Banerjee, S. K. <i>Solid State Electronic Devices</i>. Pearson. Sections on energy bands, valence and conduction bands, and the Si band gap.</li>
+    <li id="ref-5">[5] Miller, W. H. <i>A Treatise on Crystallography</i>. Cambridge: J. &amp; J. J. Deighton, 1839. (Origin of Miller indices.)</li>
+    <li id="ref-6">[6] Frenkel, J. “Über die Wärmebewegung in festen und flüssigen Körpern.” <i>Zeitschrift für Physik</i> 35, 652–669 (1926). (Frenkel defect.)</li>
+    <li id="ref-7">[7] Wagner, C. &amp; Schottky, W. “Theorie der geordneten Mischphasen.” <i>Zeitschrift für Physikalische Chemie B</i> 11, 163–210 (1930). (Schottky defect.)</li>
+    <li id="ref-8">[8] Potassium chloride, structure and lattice constant a = 629.2 pm (rock-salt/FCC): <a href="https://en.wikipedia.org/wiki/Potassium_chloride" target="_blank" rel="noopener">en.wikipedia.org/wiki/Potassium_chloride</a>; also <a href="https://www.webqc.org/compound-Kcl-Kcl.html" target="_blank" rel="noopener">webqc.org/compound-Kcl-Kcl.html</a>.</li>
+    <li id="ref-9">[9] BIPM. <i>The International System of Units (SI)</i>, 9th ed., 2019. Avogadro constant N<sub>A</sub> = 6.02214076 × 10²³ mol⁻¹.</li>
+    <li id="ref-10">[10] Bravais, A. “Mémoire sur les systèmes formés par des points distribués régulièrement sur un plan ou dans l’espace.” <i>Journal de l’École Polytechnique</i> 19, 1–128 (1850). (The 14 lattices.)</li>
+    <li id="ref-11">[11] Hales, T. C. “A proof of the Kepler conjecture.” <i>Annals of Mathematics</i> 162, 1065–1185 (2005). (74.05% is the densest packing of equal spheres.)</li>
+  </ol>
+</section>
+
+<footer data-bn="Handwritten solid state physics note থেকে তৈরি। Note-এর Bengali পাশের টীকাগুলো (যেমন Frenkel defect-এ density একই থাকে) ব্যাখ্যার ভেতরে মিশিয়ে দেওয়া হয়েছে।">Built from the handwritten solid state physics notes. Bengali margin remarks in the original (for example, that density stays the same in a Frenkel defect) are folded into the explanations above.</footer>
+</main>
+
+<script>
+/* ---------- language toggle (keywords stay English; only [data-bn] elements change) ---------- */
+(function(){
+  var root=document.documentElement;
+  function setLang(l){
+    var bn=(l==='bn');
+    var els=document.querySelectorAll('[data-bn]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      if(el.getAttribute('data-en')===null){el.setAttribute('data-en',el.innerHTML);}
+      el.innerHTML=bn?el.getAttribute('data-bn'):el.getAttribute('data-en');
+    }
+    root.classList.toggle('bn',bn);
+    root.setAttribute('lang',bn?'bn':'en');
+    document.getElementById('b-en').setAttribute('aria-pressed',bn?'false':'true');
+    document.getElementById('b-bn').setAttribute('aria-pressed',bn?'true':'false');
+    try{localStorage.setItem('ssp-lang',l);}catch(e){}
+  }
+  document.getElementById('b-en').addEventListener('click',function(){setLang('en');});
+  document.getElementById('b-bn').addEventListener('click',function(){setLang('bn');});
+  var saved=null;
+  try{saved=localStorage.getItem('ssp-lang');}catch(e){}
+  if(saved==='bn'){setLang('bn');}
+})();
+
+/* ---------- figures ---------- */
+(function(){
+  function $(id){return document.getElementById(id);}
+  function f(n){return n.toFixed(1);}
+
+  var V=[];
+  for(var x=0;x<2;x++)for(var y=0;y<2;y++)for(var z=0;z<2;z++)V.push([x,y,z]);
+  function proj(p,s,ox,oy){return [ox+s*(p[0]+0.45*p[1]), oy-s*(p[2]+0.35*p[1])];}
+  function cubeSVG(o){
+    var s=100,ox=26,oy=150;
+    var out='<svg viewBox="0 0 190 175" role="img" aria-label="'+o.label+'">';
+    for(var i=0;i<8;i++){
+      for(var j=i+1;j<8;j++){
+        var a=V[i],b=V[j];
+        var d=(a[0]!==b[0])+(a[1]!==b[1])+(a[2]!==b[2]);
+        if(d!==1)continue;
+        var hidden=(a[0]===0&&a[1]===1&&a[2]===0)||(b[0]===0&&b[1]===1&&b[2]===0);
+        var A=proj(a,s,ox,oy),B=proj(b,s,ox,oy);
+        out+='<line x1="'+f(A[0])+'" y1="'+f(A[1])+'" x2="'+f(B[0])+'" y2="'+f(B[1])+'" class="edge'+(hidden?' hid':'')+'"/>';
+      }
+    }
+    if(o.plane){
+      var pts=o.plane.map(function(p){var q=proj(p,s,ox,oy);return f(q[0])+','+f(q[1]);}).join(' ');
+      out+='<polygon points="'+pts+'" class="plane"/>';
+    }
+    if(o.lines){
+      o.lines.forEach(function(l){
+        var A=proj(l[0],s,ox,oy),B=proj(l[1],s,ox,oy);
+        out+='<line x1="'+f(A[0])+'" y1="'+f(A[1])+'" x2="'+f(B[0])+'" y2="'+f(B[1])+'" class="ldiag"/>';
+      });
+    }
+    if(o.atoms){
+      var at=o.atoms.slice().sort(function(a,b){return b.p[1]-a.p[1];});
+      at.forEach(function(a){
+        var q=proj(a.p,s,ox,oy);
+        out+='<circle cx="'+f(q[0])+'" cy="'+f(q[1])+'" r="9" class="'+a.c+'"/>';
+      });
+    }
+    if(o.texts){
+      o.texts.forEach(function(t){
+        var q=proj(t.p,s,ox,oy);
+        out+='<text x="'+f(q[0]+t.dx)+'" y="'+f(q[1]+t.dy)+'" class="b" style="fill:var(--margin);font-size:13px">'+t.t+'</text>';
+      });
+    }
+    if(o.axes){
+      var O=proj([0,0,0],s,ox,oy);
+      var X=proj([1.22,0,0],s,ox,oy),Y=proj([0,1.28,0],s,ox,oy),Z=proj([0,0,1.2],s,ox,oy);
+      out+='<circle cx="'+f(O[0])+'" cy="'+f(O[1])+'" r="2.6" class="dot"/>';
+      out+='<text x="'+f(O[0]-12)+'" y="'+f(O[1]+12)+'" class="b">O</text>';
+      out+='<text x="'+f(X[0])+'" y="'+f(X[1]+4)+'" class="b">x</text>';
+      out+='<text x="'+f(Y[0]-2)+'" y="'+f(Y[1]+4)+'" class="b">y</text>';
+      out+='<text x="'+f(Z[0]-3)+'" y="'+f(Z[1]-2)+'" class="b">z</text>';
+    }
+    return out+'</svg>';
+  }
+  var corners=V.map(function(p){return {p:p,c:'c1'};});
+  var bodyAtom={p:[.5,.5,.5],c:'c2'};
+  var faces=[[.5,.5,0],[.5,.5,1],[.5,0,.5],[.5,1,.5],[0,.5,.5],[1,.5,.5]].map(function(p){return {p:p,c:'c3'};});
+  $('cube-sc').innerHTML=cubeSVG({label:'Simple cubic unit cell',atoms:corners});
+  $('cube-bcc').innerHTML=cubeSVG({label:'Body-centered cubic unit cell',atoms:corners.concat([bodyAtom])});
+  $('cube-fcc').innerHTML=cubeSVG({label:'Face-centered cubic unit cell',atoms:corners.concat(faces)});
+  $('cube-fdiag').innerHTML=cubeSVG({label:'Face diagonal of a cube',lines:[[[0,0,0],[1,0,1]]],texts:[{p:[.5,0,.5],dx:6,dy:-6,t:'√2 a'}]});
+  $('cube-bdiag').innerHTML=cubeSVG({label:'Body diagonal of a cube',lines:[[[0,0,0],[1,1,1]]],texts:[{p:[.5,.5,.5],dx:8,dy:14,t:'√3 a'}]});
+
+  var planes={
+    m100:[[1,0,0],[1,1,0],[1,1,1],[1,0,1]],
+    m010:[[0,1,0],[1,1,0],[1,1,1],[0,1,1]],
+    m001:[[0,0,1],[1,0,1],[1,1,1],[0,1,1]],
+    m110:[[1,0,0],[0,1,0],[0,1,1],[1,0,1]],
+    m101:[[1,0,0],[0,0,1],[0,1,1],[1,1,0]],
+    m111:[[1,0,0],[0,1,0],[0,0,1]]
+  };
+  Object.keys(planes).forEach(function(k){
+    $(k).innerHTML=cubeSVG({label:'Plane '+k.slice(1),plane:planes[k],axes:true});
+  });
+
+  function dots(jit){
+    var seed=11;
+    function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647-0.5;}
+    var s='<svg viewBox="0 0 240 130" role="img" aria-label="'+(jit?'Amorphous':'Crystalline')+' arrangement">';
+    for(var r=0;r<4;r++){
+      for(var c=0;c<8;c++){
+        var cx=22+c*28+(jit?rnd()*jit:0), cy=22+r*29+(jit?rnd()*jit:0);
+        s+='<circle cx="'+f(cx)+'" cy="'+f(cy)+'" r="7.5" class="c1"/>';
+      }
+    }
+    return s+'</svg>';
+  }
+  $('fig-ordered').innerHTML=dots(0);
+  $('fig-amorph').innerHTML=dots(20);
+
+  $('fig-basis').innerHTML=(function(){
+    var s='<svg viewBox="0 0 300 200" role="img" aria-label="Lattice plus basis equals crystal">';
+    s+='<text x="8" y="14" class="b">Lattice</text>';
+    s+='<text x="8" y="70" class="b">Basis</text>';
+    s+='<text x="8" y="130" class="b">Crystal = lattice + basis</text>';
+    for(var i=0;i<5;i++){
+      var x=40+i*55;
+      s+='<circle cx="'+x+'" cy="36" r="4" class="dot"/>';
+      s+='<circle cx="'+x+'" cy="160" r="9" class="c1"/><circle cx="'+(x+20)+'" cy="160" r="5" class="c2"/>';
+    }
+    s+='<circle cx="40" cy="94" r="9" class="c1"/><circle cx="60" cy="94" r="5" class="c2"/>';
+    s+='<text x="84" y="98" class="m">basis (2 atoms)</text>';
+    return s+'</svg>';
+  })();
+
+  $('fig-hex').innerHTML=(function(){
+    var s='<svg viewBox="0 0 220 150" role="img" aria-label="Hexagonal cell base with 120 degree angle">';
+    var O=[70,118],A=[150,118],B=[30,49],C=[110,49];
+    s+='<polygon points="'+O+' '+A+' '+C+' '+B+'" class="plane"/>';
+    s+='<polyline points="'+O+' '+A+' '+C+' '+B+' '+O+'" class="ln"/>';
+    s+='<path d="M 92 118 A 22 22 0 0 0 80.5 99" class="dash"/>';
+    s+='<text x="94" y="96" class="b">γ = 120°</text>';
+    s+='<text x="106" y="134" class="b">a</text><text x="36" y="88" class="b">b</text>';
+    s+='<text x="162" y="122" class="m">a = b</text>';
+    s+='<text x="58" y="132" class="m">O</text>';
+    return s+'</svg>';
+  })();
+
+  $('geo-sc').innerHTML=(function(){
+    var s='<svg viewBox="0 0 160 170" role="img" aria-label="Simple cubic: atoms touch along the edge">';
+    s+='<defs><clipPath id="cpsc"><rect x="20" y="20" width="120" height="120"/></clipPath></defs>';
+    s+='<g clip-path="url(#cpsc)">';
+    [[20,20],[140,20],[20,140],[140,140]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="60" class="c1" fill-opacity=".85"/>';});
+    s+='</g><rect x="20" y="20" width="120" height="120" class="ln"/>';
+    s+='<line x1="20" y1="154" x2="140" y2="154" class="lnm"/><text x="64" y="167" class="b">a = 2r</text>';
+    return s+'</svg>';
+  })();
+  $('geo-fcc').innerHTML=(function(){
+    var s='<svg viewBox="0 0 160 170" role="img" aria-label="FCC: atoms touch along the face diagonal">';
+    s+='<defs><clipPath id="cpfcc"><rect x="20" y="20" width="120" height="120"/></clipPath></defs>';
+    s+='<g clip-path="url(#cpfcc)">';
+    [[20,20],[140,20],[20,140],[140,140]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="42.43" class="c1" fill-opacity=".85"/>';});
+    s+='<circle cx="80" cy="80" r="42.43" class="c3" fill-opacity=".9"/></g>';
+    s+='<rect x="20" y="20" width="120" height="120" class="ln"/>';
+    s+='<line x1="20" y1="140" x2="140" y2="20" class="dash"/>';
+    s+='<text x="62" y="167" class="b">diagonal = 4r</text>';
+    return s+'</svg>';
+  })();
+  $('geo-bcc').innerHTML=(function(){
+    var s='<svg viewBox="0 0 160 190" role="img" aria-label="BCC: atoms touch along the body diagonal">';
+    s+='<defs><clipPath id="cpbcc"><rect x="20" y="10" width="100" height="141.42"/></clipPath></defs>';
+    s+='<g clip-path="url(#cpbcc)">';
+    [[20,10],[120,10],[20,151.42],[120,151.42]].forEach(function(p){s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="43.3" class="c1" fill-opacity=".85"/>';});
+    s+='<circle cx="70" cy="80.71" r="43.3" class="c2" fill-opacity=".9"/></g>';
+    s+='<rect x="20" y="10" width="100" height="141.42" class="ln"/>';
+    s+='<line x1="20" y1="151.42" x2="120" y2="10" class="dash"/>';
+    s+='<text x="40" y="172" class="b">body diagonal = 4r</text>';
+    return s+'</svg>';
+  })();
+
+  $('fig-bars').innerHTML=(function(){
+    var data=[['SC',52.36,'c1'],['BCC',68.02,'c2'],['FCC',74.05,'c3']];
+    var s='<svg viewBox="0 0 320 130" role="img" aria-label="Packing fraction bar chart">';
+    data.forEach(function(d,i){
+      var y=14+i*38, w=d[1]*3.4;
+      s+='<text x="8" y="'+(y+18)+'" class="b">'+d[0]+'</text>';
+      s+='<rect x="52" y="'+y+'" width="'+f(w)+'" height="26" class="'+d[2]+'" rx="2"/>';
+      s+='<text x="'+f(52+w-8)+'" y="'+(y+18)+'" text-anchor="end" style="fill:#fff;font-weight:700">'+d[1].toFixed(1)+'%</text>';
+    });
+    return s+'</svg>';
+  })();
+
+  function arrow(x,y,a){
+    return '<g transform="translate('+x+' '+y+') rotate('+a+')"><line x1="-9" y1="0" x2="4" y2="0" class="ln"/><path d="M9 0 L2 -3.5 L2 3.5Z" class="arrowfill"/></g>';
+  }
+  $('fig-single').innerHTML=(function(){
+    var s='<svg viewBox="0 0 240 130" role="img" aria-label="Single crystal with aligned lattice">';
+    s+='<rect x="10" y="10" width="220" height="110" class="gr1"/><rect x="10" y="10" width="220" height="110" class="gb"/>';
+    for(var r=0;r<3;r++)for(var c=0;c<5;c++)s+=arrow(35+c*42,28+r*38,0);
+    return s+'</svg>';
+  })();
+  function polySVG(){
+    var s='<svg viewBox="0 0 240 130" role="img" aria-label="Polycrystal with four grains">';
+    s+='<polygon points="10,10 125,10 115,70 10,60" class="gr1"/>';
+    s+='<polygon points="125,10 230,10 230,55 115,70" class="gr2"/>';
+    s+='<polygon points="10,60 115,70 135,120 10,120" class="gr3"/>';
+    s+='<polygon points="115,70 230,55 230,120 135,120" class="gr4"/>';
+    s+='<rect x="10" y="10" width="220" height="110" class="gb"/>';
+    s+='<polyline points="125,10 115,70 135,120" class="gb"/><polyline points="10,60 115,70 230,55" class="gb"/>';
+    [[35,28],[75,28],[55,48]].forEach(function(p){s+=arrow(p[0],p[1],0);});
+    [[150,28],[195,28],[175,45]].forEach(function(p){s+=arrow(p[0],p[1],35);});
+    [[30,85],[70,95],[50,108]].forEach(function(p){s+=arrow(p[0],p[1],-50);});
+    [[160,100],[205,90],[185,110]].forEach(function(p){s+=arrow(p[0],p[1],80);});
+    s+='<text x="76" y="64" class="m" style="font-size:9px">grain boundary</text>';
+    return s+'</svg>';
+  }
+  $('fig-poly').innerHTML=polySVG();
+  $('fig-poly2').innerHTML=polySVG();
+
+  function sx(c){return 26+c*34;}
+  function sy(r){return 26+r*34;}
+  function defectGrid(kind){
+    var s='<svg viewBox="0 0 220 150" role="img" aria-label="'+kind+' defect">';
+    var vac=[], interstitial=null;
+    if(kind==='Frenkel'){vac=[[1,1]];interstitial=[3.5,1.5];}
+    else{vac=[[1,1],[4,1]];}
+    for(var r=0;r<4;r++){
+      for(var c=0;c<6;c++){
+        var isVac=vac.some(function(v){return v[0]===c&&v[1]===r;});
+        var cat=((c+r)%2===0);
+        var rad=cat?7:10;
+        if(isVac){s+='<circle cx="'+sx(c)+'" cy="'+sy(r)+'" r="'+rad+'" class="vac"/>';}
+        else{s+='<circle cx="'+sx(c)+'" cy="'+sy(r)+'" r="'+rad+'" class="'+(cat?'c2':'c1')+'"/>';}
+      }
+    }
+    if(interstitial){
+      var ix=sx(interstitial[0]),iy=sy(interstitial[1]);
+      s+='<circle cx="'+ix+'" cy="'+iy+'" r="7" class="c2"/>';
+      s+='<path d="M '+(sx(1)+9)+' '+(sy(1)-9)+' Q '+((sx(1)+ix)/2)+' '+(sy(0)-12)+' '+(ix-8)+' '+(iy-8)+'" class="dash"/>';
+      s+='<text x="'+(ix-30)+'" y="'+(sy(3)+22)+'" class="m">interstitial position</text>';
+      s+='<text x="'+(sx(1)-18)+'" y="'+(sy(3)+22)+'" class="m">vacancy</text>';
+    } else {
+      s+='<text x="26" y="'+(sy(3)+22)+'" class="m">two vacancies</text>';
+    }
+    return s+'</svg>';
+  }
+  $('fig-frenkel').innerHTML=defectGrid('Frenkel');
+  $('fig-schottky').innerHTML=defectGrid('Schottky');
+
+  $('fig-disl').innerHTML=(function(){
+    var s='<svg viewBox="0 0 220 150" role="img" aria-label="Edge dislocation with an extra half-plane">';
+    for(var r=0;r<3;r++)for(var c=0;c<7;c++)s+='<circle cx="'+(24+c*28.7)+'" cy="'+(22+r*24)+'" r="6.5" class="c1"/>';
+    for(var r2=3;r2<6;r2++)for(var c2=0;c2<6;c2++)s+='<circle cx="'+(24+c2*34.4)+'" cy="'+(22+r2*24)+'" r="6.5" class="c1"/>';
+    s+='<line x1="110" y1="14" x2="110" y2="76" class="dash"/>';
+    s+='<text x="104" y="98" class="b" style="fill:var(--margin);font-size:16px">⊥</text>';
+    s+='<text x="150" y="40" class="m">extra half-plane</text>';
+    s+='<text x="126" y="98" class="m">dislocation line</text>';
+    return s+'</svg>';
+  })();
+
+  $('fig-band').innerHTML=(function(){
+    var s='<svg viewBox="0 0 340 235" role="img" aria-label="Atomic energy levels broadening into energy bands">';
+    s+='<text x="62" y="14" class="b" text-anchor="middle">Single atom</text>';
+    s+='<text x="270" y="14" class="b" text-anchor="middle">Crystal (N atoms)</text>';
+    s+='<line x1="30" y1="215" x2="30" y2="24" class="ln"/><path d="M30 20 L26 28 L34 28Z" class="arrowfill"/>';
+    s+='<text x="12" y="120" transform="rotate(-90 12 120)" text-anchor="middle" class="m">Energy (eV)</text>';
+    var lv=[[190,'1st'],[130,'2nd'],[70,'3rd']];
+    lv.forEach(function(l){
+      s+='<line x1="42" y1="'+l[0]+'" x2="104" y2="'+l[0]+'" class="ln"/>';
+      s+='<text x="108" y="'+(l[0]+4)+'" class="m">'+l[1]+'</text>';
+    });
+    [[190,2],[130,4],[70,3]].forEach(function(e){
+      for(var i=0;i<e[1];i++)s+='<circle cx="'+(52+i*13)+'" cy="'+(e[0]-5)+'" r="3" class="c1"/>';
+    });
+    s+='<path d="M140 120 L196 120" class="ln"/><path d="M200 120 L192 115 L192 125Z" class="arrowfill"/>';
+    s+='<text x="168" y="108" text-anchor="middle" class="m">N atoms</text>';
+    var bands=[[180,22,'1st band'],[112,36,'2nd band'],[42,56,'3rd band']];
+    bands.forEach(function(b){
+      s+='<rect x="212" y="'+b[0]+'" width="100" height="'+b[1]+'" class="band" rx="2"/>';
+      var n=Math.round(b[1]/4);
+      for(var i=1;i<n;i++){s+='<line x1="212" y1="'+f(b[0]+i*b[1]/n)+'" x2="312" y2="'+f(b[0]+i*b[1]/n)+'" stroke="var(--accent)" stroke-opacity=".5" stroke-width=".8"/>';}
+      s+='<text x="262" y="'+(b[0]+b[1]+13)+'" text-anchor="middle" class="m">'+b[2]+'</text>';
+    });
+    s+='<line x1="104" y1="190" x2="212" y2="191" class="lnm" stroke-dasharray="2 4"/>';
+    s+='<line x1="104" y1="130" x2="212" y2="130" class="lnm" stroke-dasharray="2 4"/>';
+    s+='<line x1="104" y1="70" x2="212" y2="70" class="lnm" stroke-dasharray="2 4"/>';
+    return s+'</svg>';
+  })();
+
+  $('fig-gaps').innerHTML=(function(){
+    var s='<svg viewBox="0 0 340 165" role="img" aria-label="Band gaps of a conductor, a semiconductor and an insulator">';
+    var panels=[
+      {x:12,cy:70,name:'Conductor',gap:null},
+      {x:124,cy:30,name:'Semiconductor',gap:'Eg small'},
+      {x:236,cy:8,name:'Insulator',gap:'Eg large'}
+    ];
+    panels.forEach(function(p){
+      s+='<rect x="'+p.x+'" y="85" width="92" height="38" class="vb" rx="2"/>';
+      s+='<rect x="'+p.x+'" y="'+p.cy+'" width="92" height="38" class="cb" rx="2"/>';
+      s+='<text x="'+(p.x+46)+'" y="108" text-anchor="middle" class="b">valence</text>';
+      s+='<text x="'+(p.x+46)+'" y="'+(p.cy+23)+'" text-anchor="middle" class="b">conduction</text>';
+      s+='<text x="'+(p.x+46)+'" y="148" text-anchor="middle" class="b">'+p.name+'</text>';
+      if(p.gap){
+        var top=p.cy+38;
+        s+='<line x1="'+(p.x+82)+'" y1="'+top+'" x2="'+(p.x+82)+'" y2="85" class="dash"/>';
+        s+='<text x="'+(p.x+46)+'" y="'+(top+(85-top)/2+4)+'" text-anchor="middle" class="m">'+p.gap+'</text>';
+      } else {
+        s+='<text x="'+(p.x+46)+'" y="'+(p.cy-6)+'" text-anchor="middle" class="m">bands overlap</text>';
+      }
+    });
+    return s+'</svg>';
+  })();
+
+  $('fig-kcl').innerHTML=(function(){
+    var s='<svg viewBox="0 0 300 100" role="img" aria-label="K plus and Cl minus alternate along a cell edge">';
+    var xs=[40,120,200,280], cls=['c1','c2','c1','c2'], lab=['K⁺','Cl⁻','K⁺','Cl⁻'];
+    xs.forEach(function(x,i){
+      s+='<circle cx="'+x+'" cy="40" r="'+(i%2?22:15)+'" class="'+cls[i]+'" fill-opacity=".9"/>';
+      s+='<text x="'+x+'" y="44" text-anchor="middle" class="b" style="fill:#fff">'+lab[i]+'</text>';
+    });
+    s+='<line x1="40" y1="78" x2="120" y2="78" class="lnm"/><text x="80" y="94" text-anchor="middle" class="b">d = a/2</text>';
+    s+='<line x1="40" y1="68" x2="40" y2="88" class="lnm"/><line x1="120" y1="68" x2="120" y2="88" class="lnm"/>';
+    s+='<line x1="40" y1="68" x2="200" y2="68" class="lnm" stroke-dasharray="2 3"/><line x1="200" y1="68" x2="200" y2="88" class="lnm"/>';
+    s+='<text x="200" y="94" text-anchor="middle" class="m">a = 2d</text>';
+    return s+'</svg>';
+  })();
+})();
+</script>
+</body>
+</html>
